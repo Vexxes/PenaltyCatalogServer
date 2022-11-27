@@ -3,10 +3,9 @@ package de.vexxes.data.repository
 import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.Repository
-import org.litote.kmongo.ascending
+import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import org.litote.kmongo.eq
-import org.litote.kmongo.upsert
+import org.litote.kmongo.regex
 
 class RepositoryImpl(
     database: CoroutineDatabase
@@ -14,10 +13,11 @@ class RepositoryImpl(
 
     private val players = database.getCollection<Player>()
 
-    override suspend fun getAllPlayers(): ApiResponse {
+    override suspend fun getAllPlayers(sortOrder: Int): ApiResponse {
+        val sortAscDesc = if(sortOrder == 1) ascending(Player::number) else descending(Player::number)
         return ApiResponse(
             success = true,
-            player = players.find().sort(ascending(Player::number)).toList()
+            player = players.find().sort(sortAscDesc).toList()
         )
     }
 
@@ -40,5 +40,22 @@ class RepositoryImpl(
         return players.deleteOneById(
             id = playerId!!
         ).wasAcknowledged()
+    }
+
+    override suspend fun getPlayersBySearch(searchText: String): ApiResponse {
+        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
+        val searchTextReplace = searchText.replace("\"", "")
+
+        return ApiResponse(
+            success = true,
+            player = players.find(
+                or(
+                    Player::firstName regex searchTextReplace,
+                    Player::lastName regex searchTextReplace
+                )
+            )
+                .sort(ascending(Player::number))
+                .toList()
+        )
     }
 }

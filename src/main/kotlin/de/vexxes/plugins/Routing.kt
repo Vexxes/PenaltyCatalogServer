@@ -2,6 +2,7 @@ package de.vexxes.plugins
 
 import de.vexxes.domain.repository.Repository
 import de.vexxes.routes.*
+import de.vexxes.routes.Players.getPlayersBySearch
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.koin.java.KoinJavaComponent.inject
@@ -15,6 +16,7 @@ fun Application.configureRouting() {
         rootRoute()
         getAllPlayer(application, repository)
         getPlayerById(application, repository)
+        getPlayersBySearch(application, repository)
         updatePlayer(application, repository)
         deletePlayer(application, repository)
         unauthorizedRoute()
