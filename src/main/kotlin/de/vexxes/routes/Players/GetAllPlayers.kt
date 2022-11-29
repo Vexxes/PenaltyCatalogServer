@@ -13,7 +13,7 @@ fun Route.getAllPlayer(
 ) {
     get(Endpoint.GetAllPlayers.path) {
         try {
-            val sortAscDesc = call.request.queryParameters["sortAscDesc"]!!.toInt()
+            val sortAscDesc = if(call.request.queryParameters["sortAscDesc"].isNullOrEmpty()) 1 else call.request.queryParameters["sortAscDesc"]!!.toInt()
             println(sortAscDesc)
             call.respond(
                 message = repository.getAllPlayers(sortOrder = sortAscDesc),
