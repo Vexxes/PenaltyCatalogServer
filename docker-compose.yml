@@ -1,0 +1,23 @@
+#Start this docker-compose file use 'docker-compose up -d' <- this will also create the container
+#Stop the container with 'docker-compose down' <- this will also delete the container
+
+version: "1"
+services:
+  penalty-database:
+    image: mongo
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root
+#    volumes:
+#      -
+
+  penalty-server:
+    image: openjdk:11
+    ports:
+      - 8088:8088
+    volumes:
+      - "./build/libs/de.vexxes.penaltycatalogserver-0.0.1.jar:/opt/penaltycatalogserver.jar"
+    command: ['java', '-jar', '/opt/penaltycatalogserver.jar']
+    links:
+      - "penalty-database:database"
+

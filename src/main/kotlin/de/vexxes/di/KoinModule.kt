@@ -10,7 +10,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 
 val koinModule = module {
     single {
-        KMongo.createClient(ConnectionString("mongodb://192.168.178.59:27017"))
+        KMongo.createClient(ConnectionString("mongodb://penalty-database:27017/"))
             .coroutine
             .getDatabase(DATABASE_NAME)
     }
