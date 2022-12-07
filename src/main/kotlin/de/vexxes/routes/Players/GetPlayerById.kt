@@ -1,5 +1,6 @@
 package de.vexxes.routes
 
+import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
@@ -9,20 +10,25 @@ import io.ktor.server.routing.*
 
 fun Route.getPlayerById(
     app: Application,
-    repository: Repository
+    repository: Repository,
+    validateBearerToken: ValidateBearerToken
 ) {
     get(Endpoint.GetPlayerById.path) {
-        try {
+        if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
+            try {
 
-            app.log.info("PlayerId " + call.parameters["playerId"])
-            call.respond(
-                message = repository.getPlayerById(playerId = call.parameters["playerId"]),
-                status = HttpStatusCode.OK
-            )
-        }
-        catch (e: Exception) {
-            app.log.info("GETTING PLAYER BY ID ERROR: ${e.message}")
-            call.respond("GETTING PLAYER BY ID ERROR: ${e.message}")
+                app.log.info("PlayerId " + call.parameters["playerId"])
+                call.respond(
+                    message = repository.getPlayerById(playerId = call.parameters["playerId"]),
+                    status = HttpStatusCode.OK
+                )
+            } catch (e: Exception) {
+                app.log.info("GETTING PLAYER BY ID ERROR: ${e.message}")
+                call.respond("GETTING PLAYER BY ID ERROR: ${e.message}")
+            }
+        } else {
+            app.log.info("authentication failed")
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }

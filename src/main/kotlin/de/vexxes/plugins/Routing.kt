@@ -1,5 +1,6 @@
 package de.vexxes.plugins
 
+import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.repository.Repository
 import de.vexxes.routes.*
 import de.vexxes.routes.Players.getPlayersBySearch
@@ -14,11 +15,11 @@ fun Application.configureRouting() {
     routing {
         val repository: Repository by inject(Repository::class.java)
         rootRoute()
-        getAllPlayer(application, repository)
-        getPlayerById(application, repository)
-        getPlayersBySearch(application, repository)
-        updatePlayer(application, repository)
-        deletePlayer(application, repository)
+        getAllPlayer(application, repository, validateBearerToken = ValidateBearerToken())
+        getPlayerById(application, repository, validateBearerToken = ValidateBearerToken())
+        getPlayersBySearch(application, repository, validateBearerToken = ValidateBearerToken())
+        updatePlayer(application, repository, validateBearerToken = ValidateBearerToken())
+        deletePlayer(application, repository, validateBearerToken = ValidateBearerToken())
         unauthorizedRoute()
     }
 }
