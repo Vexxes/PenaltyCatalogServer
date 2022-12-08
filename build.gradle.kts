@@ -58,6 +58,9 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-locations-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
+
+    implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion")
+
 }
 
 ktor {

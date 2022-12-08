@@ -1,4 +1,4 @@
-package de.vexxes.routes
+package de.vexxes.routes.penalty
 
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository
@@ -7,22 +7,20 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPlayerById(
+fun Route.getPenaltiesBySearch(
     app: Application,
     repository: Repository
 ) {
-    get(Endpoint.GetPlayerById.path) {
+    get(Endpoint.GetPenaltiesBySearch.path) {
         try {
-
-            app.log.info("PlayerId " + call.parameters["playerId"])
             call.respond(
-                message = repository.getPlayerById(playerId = call.parameters["playerId"]),
+                message = repository.getPenaltiesBySearch(searchText = call.request.queryParameters["searchText"]!!),
                 status = HttpStatusCode.OK
             )
         }
         catch (e: Exception) {
-            app.log.info("GETTING PLAYER BY ID ERROR: ${e.message}")
-            call.respond("GETTING PLAYER BY ID ERROR: ${e.message}")
+            app.log.info("GETTING PENALTIES BY SEARCH ERROR: ${e.message}")
+            call.respond("GETTING PENALTIES BY SEARCH ERROR: ${e.message}")
         }
     }
 }

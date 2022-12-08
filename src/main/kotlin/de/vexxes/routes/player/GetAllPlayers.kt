@@ -1,4 +1,4 @@
-package de.vexxes.routes
+package de.vexxes.routes.player
 
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository

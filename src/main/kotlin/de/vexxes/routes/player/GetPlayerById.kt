@@ -1,4 +1,4 @@
-package de.vexxes.routes.Players
+package de.vexxes.routes.player
 
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository
@@ -7,20 +7,22 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPlayersBySearch(
+fun Route.getPlayerById(
     app: Application,
     repository: Repository
 ) {
-    get(Endpoint.GetPlayersBySearch.path) {
+    get(Endpoint.GetPlayerById.path) {
         try {
+
+            app.log.info("PlayerId " + call.parameters["playerId"])
             call.respond(
-                message = repository.getPlayersBySearch(searchText = call.request.queryParameters["searchText"]!!),
+                message = repository.getPlayerById(playerId = call.parameters["playerId"]),
                 status = HttpStatusCode.OK
             )
         }
         catch (e: Exception) {
-            app.log.info("GETTING PLAYERS BY SEARCH ERROR: ${e.message}")
-            call.respond("GETTING PLAYERS BY SEARCH ERROR: ${e.message}")
+            app.log.info("GETTING PLAYER BY ID ERROR: ${e.message}")
+            call.respond("GETTING PLAYER BY ID ERROR: ${e.message}")
         }
     }
 }
