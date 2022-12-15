@@ -5,11 +5,13 @@ version: "1"
 services:
   penalty-database:
     image: mongo
+    ports:
+      - 27017:27017
 #    environment:
 #      MONGO_INITDB_ROOT_USERNAME: root
 #      MONGO_INITDB_ROOT_PASSWORD: root
-#    volumes:
-#      -
+    volumes:
+      - "./data/db:/data/db"
 
   penalty-server:
     image: openjdk:11
@@ -20,4 +22,3 @@ services:
     command: ['java', '-jar', '/opt/penaltycatalogserver.jar']
     links:
       - "penalty-database:database"
-

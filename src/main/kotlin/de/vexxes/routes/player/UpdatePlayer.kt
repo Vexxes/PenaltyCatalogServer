@@ -1,31 +1,34 @@
-package de.vexxes.routes
+package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Endpoint
+import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.deletePlayer(
+fun Route.updatePlayer(
     app: Application,
     repository: Repository,
     validateBearerToken: ValidateBearerToken
 ) {
-    put(Endpoint.DeletePlayer.path) {
-
+    put(Endpoint.UpdatePlayer.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val playerId = call.parameters["playerId"]
-                val response = repository.deletePlayer(playerId = playerId)
+                val player = call.receive<Player>()
+                app.log.info("UPDATE PLAYER INFO ERROR: $player")
+
+                val response = repository.updatePlayer(player = player)
 
                 if (response) {
                     call.respond(
                         message = ApiResponse(
                             success = true,
-                            message = "Successfully deleted!"
+                            message = "Successfully Updated!"
                         ),
                         status = HttpStatusCode.OK
                     )
@@ -36,7 +39,7 @@ fun Route.deletePlayer(
                     )
                 }
             } catch (e: Exception) {
-                app.log.info("DELETE PLAYER INFO ERROR: $e")
+                app.log.info("UPDATE PLAYER INFO ERROR: ${e.message} ${e.cause}")
             }
         } else {
             app.log.info("authentication failed")

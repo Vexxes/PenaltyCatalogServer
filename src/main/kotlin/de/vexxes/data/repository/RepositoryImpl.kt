@@ -1,6 +1,8 @@
 package de.vexxes.data.repository
 
 import de.vexxes.domain.model.ApiResponse
+import de.vexxes.domain.model.Penalty
+import de.vexxes.domain.model.PenaltyCategory
 import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.Repository
 import org.litote.kmongo.*
@@ -12,6 +14,8 @@ class RepositoryImpl(
 ): Repository {
 
     private val players = database.getCollection<Player>()
+    private val categories = database.getCollection<PenaltyCategory>()
+    private val penalties = database.getCollection<Penalty>()
 
     override suspend fun getAllPlayers(sortOrder: Int): ApiResponse {
         val sortAscDesc = if(sortOrder == 1) ascending(Player::number) else descending(Player::number)
@@ -50,12 +54,65 @@ class RepositoryImpl(
             success = true,
             player = players.find(
                 or(
-                    Player::firstName regex searchTextReplace,
-                    Player::lastName regex searchTextReplace
+                    (Player::firstName).regex(searchTextReplace, "i"),
+                    (Player::lastName).regex(searchTextReplace, "i")
                 )
             )
                 .sort(ascending(Player::number))
                 .toList()
         )
+    }
+
+
+
+    override suspend fun getAllCategories(): ApiResponse {
+        return ApiResponse(
+            success = true,
+            penaltyCategory = categories.find().toList()
+        )
+    }
+
+    override suspend fun getAllPenalties(): ApiResponse {
+        return ApiResponse(
+            success = true,
+            penalty = penalties.find().toList()
+        )
+    }
+
+    override suspend fun getPenaltyById(penaltyId: String?): ApiResponse {
+        return ApiResponse(
+            success = true,
+            penalty = penalties.find(filter = Penalty::_id eq penaltyId).toList()
+        )
+    }
+
+    override suspend fun getPenaltiesBySearch(searchText: String): ApiResponse {
+        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
+        val searchTextReplace = searchText.replace("\"", "")
+
+        return ApiResponse(
+            success = true,
+            penalty = penalties.find(
+                or(
+                    (Penalty::name).regex(searchTextReplace, "i"),
+                    (Penalty::nameOfCategory).regex(searchTextReplace, "i")
+                )
+            )
+                .toList()
+        )
+    }
+
+    override suspend fun updatePenalty(penalty: Penalty): Boolean {
+        return penalties.updateOneById(
+            id = penalty._id,
+            update = penalty,
+            options = upsert()
+        ).wasAcknowledged()
+    }
+
+    override suspend fun deletePenalty(penaltyId: String?): Boolean {
+        return penalties.deleteOneById(
+            id = penaltyId!!
+        ).wasAcknowledged()
     }
 }
