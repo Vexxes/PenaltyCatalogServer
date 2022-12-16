@@ -16,20 +16,19 @@ fun Application.configureRouting() {
 
     routing {
         val repository: Repository by inject(Repository::class.java)
+        val validateBearerToken = ValidateBearerToken()
         rootRoute()
-        getAllPlayer(application, repository, validateBearerToken = ValidateBearerToken())
-        getPlayerById(application, repository, validateBearerToken = ValidateBearerToken())
-        getPlayersBySearch(application, repository, validateBearerToken = ValidateBearerToken())
-        updatePlayer(application, repository, validateBearerToken = ValidateBearerToken())
-        deletePlayer(application, repository, validateBearerToken = ValidateBearerToken())
-
-        getAllCategories(application, repository)
-        getAllCategories(application, repository)
-        getAllPenalties(application, repository)
-        getPenaltyById(application, repository)
-        getPenaltiesBySearch(application, repository)
-        updatePenalty(application, repository)
-        deletePenalty(application, repository)
+        getAllPlayer(application, repository, validateBearerToken)
+        getPlayerById(application, repository, validateBearerToken)
+        getPlayersBySearch(application, repository, validateBearerToken)
+        updatePlayer(application, repository, validateBearerToken)
+        deletePlayer(application, repository, validateBearerToken)
+        getAllCategories(application, repository, validateBearerToken)
+        getAllPenalties(application, repository, validateBearerToken)
+        getPenaltyById(application, repository, validateBearerToken)
+        getPenaltiesBySearch(application, repository, validateBearerToken)
+        updatePenalty(application, repository, validateBearerToken)
+        deletePenalty(application, repository, validateBearerToken)
 
         unauthorizedRoute()
     }
