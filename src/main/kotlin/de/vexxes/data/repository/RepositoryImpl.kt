@@ -1,9 +1,6 @@
 package de.vexxes.data.repository
 
-import de.vexxes.domain.model.ApiResponse
-import de.vexxes.domain.model.Penalty
-import de.vexxes.domain.model.PenaltyCategory
-import de.vexxes.domain.model.Player
+import de.vexxes.domain.model.*
 import de.vexxes.domain.repository.Repository
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -16,6 +13,7 @@ class RepositoryImpl(
     private val players = database.getCollection<Player>()
     private val categories = database.getCollection<PenaltyCategory>()
     private val penalties = database.getCollection<Penalty>()
+    private val penaltyHistory = database.getCollection<PenaltyHistory>()
 
     override suspend fun getAllPlayers(sortOrder: Int): ApiResponse {
         val sortAscDesc = if(sortOrder == 1) ascending(Player::number) else descending(Player::number)
@@ -75,7 +73,12 @@ class RepositoryImpl(
     override suspend fun getAllPenalties(): ApiResponse {
         return ApiResponse(
             success = true,
-            penalty = penalties.find().toList()
+            penalty = penalties
+                .find()
+                .sort(
+                    ascending(Penalty::index)
+                )
+                .toList()
         )
     }
 
@@ -95,7 +98,7 @@ class RepositoryImpl(
             penalty = penalties.find(
                 or(
                     (Penalty::name).regex(searchTextReplace, "i"),
-                    (Penalty::nameOfCategory).regex(searchTextReplace, "i")
+                    (Penalty::categoryName).regex(searchTextReplace, "i")
                 )
             )
                 .toList()
@@ -113,6 +116,58 @@ class RepositoryImpl(
     override suspend fun deletePenalty(penaltyId: String?): Boolean {
         return penalties.deleteOneById(
             id = penaltyId!!
+        ).wasAcknowledged()
+    }
+
+
+
+    override suspend fun getAllPenaltyHistory(): ApiResponse {
+        return ApiResponse(
+            success = true,
+            penaltyHistory = penaltyHistory
+                .find()
+                .sort(
+                    descending(PenaltyHistory::timeOfPenalty)
+                )
+                .toList()
+        )
+    }
+
+    override suspend fun getPenaltyHistoryById(penaltyHistoryId: String?): ApiResponse {
+        return ApiResponse(
+            success = true,
+            penaltyHistory = penaltyHistory.find(filter = PenaltyHistory::_id eq penaltyHistoryId).toList()
+        )
+    }
+
+    override suspend fun getPenaltyHistoryBySearch(searchText: String): ApiResponse {
+        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
+        val searchTextReplace = searchText.replace("\"", "")
+
+        return ApiResponse(
+            success = true,
+            penaltyHistory = penaltyHistory.find(
+                or(
+                    (PenaltyHistory::penaltyName).regex(searchTextReplace, "i"),
+                    (PenaltyHistory::playerName).regex(searchTextReplace, "i"),
+                    /*TODO Implement regex / search for timeOfPenalty*/
+                )
+            )
+                .toList()
+        )
+    }
+
+    override suspend fun updatePenaltyHistory(penaltyHistory: PenaltyHistory): Boolean {
+        return this.penaltyHistory.updateOneById(
+            id = penaltyHistory._id,
+            update = penaltyHistory,
+            options = upsert()
+        ).wasAcknowledged()
+    }
+
+    override suspend fun deletePenaltyHistory(penaltyHistoryId: String?): Boolean {
+        return penaltyHistory.deleteOneById(
+            id = penaltyHistoryId!!
         ).wasAcknowledged()
     }
 }

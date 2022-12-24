@@ -60,6 +60,7 @@ dependencies {
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
 
     implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
 }
 

@@ -12,9 +12,15 @@ sealed class Endpoint(val path: String) {
     object GetAllCategories: Endpoint(path = "/get_categories")
     object GetAllPenalties: Endpoint(path = "/get_penalties")
     object GetPenaltyById: Endpoint(path = "/get_penalty/{penaltyId}")
-    object GetPenaltiesBySearch: Endpoint(path = "/get_penalty_by_search")
+    object GetPenaltiesBySearch: Endpoint(path = "/get_penalties_by_search")
     object UpdatePenalty: Endpoint(path = "/update_penalty")
     object DeletePenalty: Endpoint(path = "/delete_penalty/{penaltyId}")
+
+    object GetAllPenaltyHistory: Endpoint(path = "/get_penalty_history")
+    object GetPenaltyHistoryById: Endpoint(path = "/get_penalty_history/{penaltyHistoryId}")
+    object GetPenaltyHistoryBySearch: Endpoint(path = "/get_penalty_history_by_search")
+    object UpdatePenaltyHistory: Endpoint(path = "/update_penaltyHistory")
+    object DeletePenaltyHistory: Endpoint(path = "/delete_penalty_history/{penaltyHistoryId}")
 
     object Unauthorized: Endpoint(path = "/unauthorized")
 }

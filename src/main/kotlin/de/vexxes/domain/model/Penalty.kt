@@ -7,8 +7,9 @@ import org.bson.types.ObjectId
 data class Penalty(
     val _id: String = ObjectId().toString(),
     val name: String = "",
-    val nameOfCategory: String = "",
+    val categoryName: String = "",
     val description: String = "",
     val isBeer: Boolean = false,
-    val value: Int = 0
+    val value: Int = 0,
+    val index: Int = 0
 )
