@@ -2,9 +2,14 @@ package de.vexxes.data.repository
 
 import de.vexxes.domain.model.*
 import de.vexxes.domain.repository.Repository
+import kotlinx.serialization.Serializable
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.coroutine.aggregate
 import org.litote.kmongo.regex
+
+@Serializable
+data class ResultCount(val count: Int)
 
 class RepositoryImpl(
     database: CoroutineDatabase
@@ -89,6 +94,21 @@ class RepositoryImpl(
         )
     }
 
+    override suspend fun getDeclaredPenalties(penaltyName: String): ApiResponse {
+        val numberOfDeclaredPenalties = penaltyHistory.aggregate<ResultCount>(
+            match(filter = PenaltyHistory::penaltyName eq penaltyName),
+            group(
+                penaltyName,
+                ResultCount::count sum 1
+            )
+        )
+
+        return ApiResponse(
+            success = true,
+            message = numberOfDeclaredPenalties.first()!!.count.toString()
+        )
+    }
+
     override suspend fun getPenaltiesBySearch(searchText: String): ApiResponse {
         // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
         val searchTextReplace = searchText.replace("\"", "")
@@ -153,6 +173,9 @@ class RepositoryImpl(
                     /*TODO Implement regex / search for timeOfPenalty*/
                 )
             )
+                .sort(
+                    descending(PenaltyHistory::timeOfPenalty)
+                )
                 .toList()
         )
     }

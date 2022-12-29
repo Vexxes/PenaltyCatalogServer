@@ -15,6 +15,7 @@ interface Repository {
     suspend fun getAllCategories(): ApiResponse
     suspend fun getAllPenalties(): ApiResponse
     suspend fun getPenaltyById(penaltyId: String?): ApiResponse
+    suspend fun getDeclaredPenalties(penaltyName: String): ApiResponse
     suspend fun getPenaltiesBySearch(searchText: String): ApiResponse
     suspend fun updatePenalty(penalty: Penalty): Boolean
     suspend fun deletePenalty(penaltyId: String?): Boolean

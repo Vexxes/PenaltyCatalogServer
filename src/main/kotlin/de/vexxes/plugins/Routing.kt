@@ -29,6 +29,7 @@ fun Application.configureRouting() {
         getAllCategories(application, repository, validateBearerToken)
         getAllPenalties(application, repository, validateBearerToken)
         getPenaltyById(application, repository, validateBearerToken)
+        getDeclaredPenalties(application, repository, validateBearerToken)
         getPenaltiesBySearch(application, repository, validateBearerToken)
         updatePenalty(application, repository, validateBearerToken)
         deletePenalty(application, repository, validateBearerToken)
