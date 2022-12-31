@@ -37,6 +37,9 @@ fun Route.deletePenaltyHistory(
             } catch (e: Exception) {
                 app.log.info("DELETE PENALTY HISTORY INFO ERROR: $e")
             }
+        } else {
+            app.log.info("authentication failed")
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }

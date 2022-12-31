@@ -41,6 +41,9 @@ fun Route.updatePenaltyHistory(
             } catch (e: Exception) {
                 app.log.info("UPDATE PENALTY HISTORY INFO ERROR: ${e.message} ${e.cause}")
             }
+        } else {
+            app.log.info("authentication failed")
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }

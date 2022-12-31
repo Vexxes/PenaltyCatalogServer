@@ -26,6 +26,9 @@ fun Route.getPenaltyHistoryById(
                 app.log.info("GETTING PENALTY HISTORY BY ID ERROR: ${e.message}")
                 call.respond("GETTING PENALTY HISTORY BY ID ERROR: ${e.message}")
             }
+        } else {
+            app.log.info("authentication failed")
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }
