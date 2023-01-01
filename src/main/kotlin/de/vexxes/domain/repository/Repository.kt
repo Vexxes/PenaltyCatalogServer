@@ -1,8 +1,8 @@
 package de.vexxes.domain.repository
 
 import de.vexxes.domain.model.ApiResponse
-import de.vexxes.domain.model.Penalty
-import de.vexxes.domain.model.PenaltyHistory
+import de.vexxes.domain.model.PenaltyType
+import de.vexxes.domain.model.PenaltyReceived
 import de.vexxes.domain.model.Player
 
 interface Repository {
@@ -17,12 +17,12 @@ interface Repository {
     suspend fun getPenaltyById(penaltyId: String?): ApiResponse
     suspend fun getDeclaredPenalties(penaltyName: String): ApiResponse
     suspend fun getPenaltiesBySearch(searchText: String): ApiResponse
-    suspend fun updatePenalty(penalty: Penalty): Boolean
+    suspend fun updatePenalty(penaltyType: PenaltyType): Boolean
     suspend fun deletePenalty(penaltyId: String?): Boolean
 
     suspend fun getAllPenaltyHistory(): ApiResponse
     suspend fun getPenaltyHistoryById(penaltyHistoryId: String?): ApiResponse
     suspend fun getPenaltyHistoryBySearch(searchText: String): ApiResponse
-    suspend fun updatePenaltyHistory(penaltyHistory: PenaltyHistory): Boolean
+    suspend fun updatePenaltyHistory(penaltyReceived: PenaltyReceived): Boolean
     suspend fun deletePenaltyHistory(penaltyHistoryId: String?): Boolean
 }

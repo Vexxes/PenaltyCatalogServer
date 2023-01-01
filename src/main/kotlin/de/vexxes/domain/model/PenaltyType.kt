@@ -4,12 +4,11 @@ import kotlinx.serialization.Serializable
 import org.bson.types.ObjectId
 
 @Serializable
-data class Penalty(
+data class PenaltyType(
     val _id: String = ObjectId().toString(),
     val name: String = "",
-    val categoryName: String = "",
+    val categoryID: String = "",
     val description: String = "",
     val isBeer: Boolean = false,
-    val value: String = "",
-    val index: Int = 0
+    val value: String = ""
 )

@@ -3,7 +3,7 @@ package de.vexxes.routes.penaltyHistory
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.PenaltyHistory
+import de.vexxes.domain.model.PenaltyReceived
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -19,10 +19,10 @@ fun Route.updatePenaltyHistory(
     put(Endpoint.UpdatePenaltyHistory.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val penaltyHistory = call.receive<PenaltyHistory>()
-                app.log.info("UPDATE PENALTY HISTORY INFO ERROR: $penaltyHistory")
+                val penaltyReceived = call.receive<PenaltyReceived>()
+                app.log.info("UPDATE PENALTY HISTORY INFO ERROR: $penaltyReceived")
 
-                val response = repository.updatePenaltyHistory(penaltyHistory = penaltyHistory)
+                val response = repository.updatePenaltyHistory(penaltyReceived = penaltyReceived)
 
                 if (response) {
                     call.respond(

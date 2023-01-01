@@ -3,7 +3,7 @@ package de.vexxes.routes.penalty
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.Penalty
+import de.vexxes.domain.model.PenaltyType
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -20,10 +20,10 @@ fun Route.updatePenalty(
 
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val penalty = call.receive<Penalty>()
-                app.log.info("UPDATE PENALTY INFO ERROR: $penalty")
+                val penaltyType = call.receive<PenaltyType>()
+                app.log.info("UPDATE PENALTY INFO ERROR: $penaltyType")
 
-                val response = repository.updatePenalty(penalty = penalty)
+                val response = repository.updatePenalty(penaltyType = penaltyType)
 
                 if (response) {
                     call.respond(

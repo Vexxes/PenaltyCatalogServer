@@ -6,22 +6,21 @@ import kotlinx.serialization.Serializable
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.aggregate
-import org.litote.kmongo.regex
 
 @Serializable
 data class ResultCount(val count: Int)
 
 class RepositoryImpl(
     database: CoroutineDatabase
-): Repository {
+) : Repository {
 
     private val players = database.getCollection<Player>()
     private val categories = database.getCollection<PenaltyCategory>()
-    private val penalties = database.getCollection<Penalty>()
-    private val penaltyHistory = database.getCollection<PenaltyHistory>()
+    private val penalties = database.getCollection<PenaltyType>()
+    private val penaltyReceived = database.getCollection<PenaltyReceived>()
 
     override suspend fun getAllPlayers(sortOrder: Int): ApiResponse {
-        val sortAscDesc = if(sortOrder == 1) ascending(Player::number) else descending(Player::number)
+        val sortAscDesc = if (sortOrder == 1) ascending(Player::number) else descending(Player::number)
         return ApiResponse(
             success = true,
             player = players.find().sort(sortAscDesc).toList()
@@ -67,7 +66,6 @@ class RepositoryImpl(
     }
 
 
-
     override suspend fun getAllCategories(): ApiResponse {
         return ApiResponse(
             success = true,
@@ -78,27 +76,27 @@ class RepositoryImpl(
     override suspend fun getAllPenalties(): ApiResponse {
         return ApiResponse(
             success = true,
-            penalty = penalties
+            penaltyType = penalties
                 .find()
                 .sort(
-                    ascending(Penalty::index)
+                    ascending(PenaltyType::name)
                 )
                 .toList()
         )
     }
 
-    override suspend fun getPenaltyById(penaltyId: String?): ApiResponse {
+    override suspend fun getPenaltyById(penaltyTypeId: String?): ApiResponse {
         return ApiResponse(
             success = true,
-            penalty = penalties.find(filter = Penalty::_id eq penaltyId).toList()
+            penaltyType = penalties.find(filter = PenaltyType::_id eq penaltyTypeId).toList()
         )
     }
 
-    override suspend fun getDeclaredPenalties(penaltyName: String): ApiResponse {
-        val numberOfDeclaredPenalties = penaltyHistory.aggregate<ResultCount>(
-            match(filter = PenaltyHistory::penaltyName eq penaltyName),
+    override suspend fun getDeclaredPenalties(penaltyTypeId: String): ApiResponse {
+        val numberOfDeclaredPenalties = penaltyReceived.aggregate<ResultCount>(
+            match(filter = PenaltyReceived::penaltyTypeId eq penaltyTypeId),
             group(
-                penaltyName,
+                penaltyTypeId,
                 ResultCount::count sum 1
             )
         )
@@ -115,48 +113,47 @@ class RepositoryImpl(
 
         return ApiResponse(
             success = true,
-            penalty = penalties.find(
+            penaltyType = penalties.find(
                 or(
-                    (Penalty::name).regex(searchTextReplace, "i"),
-                    (Penalty::categoryName).regex(searchTextReplace, "i")
+                    (PenaltyType::name).regex(searchTextReplace, "i"),
+                    (PenaltyType::categoryID).regex(searchTextReplace, "i")
                 )
             )
                 .toList()
         )
     }
 
-    override suspend fun updatePenalty(penalty: Penalty): Boolean {
+    override suspend fun updatePenalty(penaltyType: PenaltyType): Boolean {
         return penalties.updateOneById(
-            id = penalty._id,
-            update = penalty,
+            id = penaltyType._id,
+            update = penaltyType,
             options = upsert()
         ).wasAcknowledged()
     }
 
-    override suspend fun deletePenalty(penaltyId: String?): Boolean {
+    override suspend fun deletePenalty(penaltyTypeId: String?): Boolean {
         return penalties.deleteOneById(
-            id = penaltyId!!
+            id = penaltyTypeId!!
         ).wasAcknowledged()
     }
-
 
 
     override suspend fun getAllPenaltyHistory(): ApiResponse {
         return ApiResponse(
             success = true,
-            penaltyHistory = penaltyHistory
+            penaltyReceived = penaltyReceived
                 .find()
                 .sort(
-                    descending(PenaltyHistory::timeOfPenalty)
+                    descending(PenaltyReceived::timeOfPenalty)
                 )
                 .toList()
         )
     }
 
-    override suspend fun getPenaltyHistoryById(penaltyHistoryId: String?): ApiResponse {
+    override suspend fun getPenaltyHistoryById(penaltyReceivedId: String?): ApiResponse {
         return ApiResponse(
             success = true,
-            penaltyHistory = penaltyHistory.find(filter = PenaltyHistory::_id eq penaltyHistoryId).toList()
+            penaltyReceived = penaltyReceived.find(filter = PenaltyReceived::_id eq penaltyReceivedId).toList()
         )
     }
 
@@ -166,31 +163,31 @@ class RepositoryImpl(
 
         return ApiResponse(
             success = true,
-            penaltyHistory = penaltyHistory.find(
+            penaltyReceived = penaltyReceived.find(
                 or(
-                    (PenaltyHistory::penaltyName).regex(searchTextReplace, "i"),
-                    (PenaltyHistory::playerName).regex(searchTextReplace, "i"),
+                    (PenaltyReceived::penaltyTypeId).regex(searchTextReplace, "i"),
+                    (PenaltyReceived::playerId).regex(searchTextReplace, "i"),
                     /*TODO Implement regex / search for timeOfPenalty*/
                 )
             )
                 .sort(
-                    descending(PenaltyHistory::timeOfPenalty)
+                    descending(PenaltyReceived::timeOfPenalty)
                 )
                 .toList()
         )
     }
 
-    override suspend fun updatePenaltyHistory(penaltyHistory: PenaltyHistory): Boolean {
-        return this.penaltyHistory.updateOneById(
-            id = penaltyHistory._id,
-            update = penaltyHistory,
+    override suspend fun updatePenaltyHistory(penaltyReceived: PenaltyReceived): Boolean {
+        return this.penaltyReceived.updateOneById(
+            id = penaltyReceived._id,
+            update = penaltyReceived,
             options = upsert()
         ).wasAcknowledged()
     }
 
-    override suspend fun deletePenaltyHistory(penaltyHistoryId: String?): Boolean {
-        return penaltyHistory.deleteOneById(
-            id = penaltyHistoryId!!
+    override suspend fun deletePenaltyHistory(penaltyReceivedId: String?): Boolean {
+        return penaltyReceived.deleteOneById(
+            id = penaltyReceivedId!!
         ).wasAcknowledged()
     }
 }
