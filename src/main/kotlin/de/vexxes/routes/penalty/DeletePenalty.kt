@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.deletePenalty(
     app: Application,
@@ -19,7 +20,7 @@ fun Route.deletePenalty(
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
                 val penaltyId = call.parameters["penaltyId"]
-                val response = repository.deletePenalty(penaltyId = penaltyId)
+                val response = repository.deletePenalty(penaltyId = penaltyId!!.toId())
 
                 if (response) {
                     call.respond(

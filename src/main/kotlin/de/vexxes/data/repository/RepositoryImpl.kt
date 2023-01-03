@@ -27,7 +27,7 @@ class RepositoryImpl(
         )
     }
 
-    override suspend fun getPlayerById(playerId: String?): ApiResponse {
+    override suspend fun getPlayerById(playerId: Id<Player>?): ApiResponse {
         return ApiResponse(
             success = true,
             player = players.find(filter = Player::_id eq playerId).toList()
@@ -42,7 +42,7 @@ class RepositoryImpl(
         ).wasAcknowledged()
     }
 
-    override suspend fun deletePlayer(playerId: String?): Boolean {
+    override suspend fun deletePlayer(playerId: Id<Player>?): Boolean {
         return players.deleteOneById(
             id = playerId!!
         ).wasAcknowledged()
@@ -85,14 +85,14 @@ class RepositoryImpl(
         )
     }
 
-    override suspend fun getPenaltyById(penaltyTypeId: String?): ApiResponse {
+    override suspend fun getPenaltyById(penaltyTypeId: Id<PenaltyType>?): ApiResponse {
         return ApiResponse(
             success = true,
             penaltyType = penalties.find(filter = PenaltyType::_id eq penaltyTypeId).toList()
         )
     }
 
-    override suspend fun getDeclaredPenalties(penaltyTypeId: String): ApiResponse {
+    override suspend fun getDeclaredPenalties(penaltyTypeId: Id<PenaltyType>?): ApiResponse {
         val numberOfDeclaredPenalties = penaltyReceived.aggregate<ResultCount>(
             match(filter = PenaltyReceived::penaltyTypeId eq penaltyTypeId),
             group(
@@ -116,7 +116,8 @@ class RepositoryImpl(
             penaltyType = penalties.find(
                 or(
                     (PenaltyType::name).regex(searchTextReplace, "i"),
-                    (PenaltyType::categoryID).regex(searchTextReplace, "i")
+                    /*TODO*/
+//                    (PenaltyType::categoryID)
                 )
             )
                 .toList()
@@ -131,7 +132,7 @@ class RepositoryImpl(
         ).wasAcknowledged()
     }
 
-    override suspend fun deletePenalty(penaltyTypeId: String?): Boolean {
+    override suspend fun deletePenalty(penaltyTypeId: Id<PenaltyType>?): Boolean {
         return penalties.deleteOneById(
             id = penaltyTypeId!!
         ).wasAcknowledged()
@@ -150,7 +151,7 @@ class RepositoryImpl(
         )
     }
 
-    override suspend fun getPenaltyHistoryById(penaltyReceivedId: String?): ApiResponse {
+    override suspend fun getPenaltyHistoryById(penaltyReceivedId: Id<PenaltyReceived>?): ApiResponse {
         return ApiResponse(
             success = true,
             penaltyReceived = penaltyReceived.find(filter = PenaltyReceived::_id eq penaltyReceivedId).toList()
@@ -165,8 +166,9 @@ class RepositoryImpl(
             success = true,
             penaltyReceived = penaltyReceived.find(
                 or(
-                    (PenaltyReceived::penaltyTypeId).regex(searchTextReplace, "i"),
-                    (PenaltyReceived::playerId).regex(searchTextReplace, "i"),
+                    /*TODO*/
+//                    (PenaltyReceived::penaltyTypeId).regex(searchTextReplace, "i"),
+//                    (PenaltyReceived::playerId).regex(searchTextReplace, "i"),
                     /*TODO Implement regex / search for timeOfPenalty*/
                 )
             )
@@ -185,7 +187,7 @@ class RepositoryImpl(
         ).wasAcknowledged()
     }
 
-    override suspend fun deletePenaltyHistory(penaltyReceivedId: String?): Boolean {
+    override suspend fun deletePenaltyHistory(penaltyReceivedId: Id<PenaltyReceived>?): Boolean {
         return penaltyReceived.deleteOneById(
             id = penaltyReceivedId!!
         ).wasAcknowledged()

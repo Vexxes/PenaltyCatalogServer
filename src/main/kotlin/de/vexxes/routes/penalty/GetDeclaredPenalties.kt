@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.getDeclaredPenalties(
     app: Application,
@@ -18,7 +19,7 @@ fun Route.getDeclaredPenalties(
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
                 call.respond(
-                    message = repository.getDeclaredPenalties(penaltyName = call.request.queryParameters["penaltyName"]!!),
+                    message = repository.getDeclaredPenalties(penaltyId = call.request.queryParameters["penaltyName"]!!.toId()),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {

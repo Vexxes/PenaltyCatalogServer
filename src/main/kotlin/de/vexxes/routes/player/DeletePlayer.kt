@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.deletePlayer(
     app: Application,
@@ -19,7 +20,7 @@ fun Route.deletePlayer(
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
                 val playerId = call.parameters["playerId"]
-                val response = repository.deletePlayer(playerId = playerId)
+                val response = repository.deletePlayer(playerId = playerId!!.toId())
 
                 if (response) {
                     call.respond(

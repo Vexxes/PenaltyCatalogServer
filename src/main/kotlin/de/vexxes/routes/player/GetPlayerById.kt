@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.getPlayerById(
     app: Application,
@@ -19,7 +20,7 @@ fun Route.getPlayerById(
 
                 app.log.info("PlayerId " + call.parameters["playerId"])
                 call.respond(
-                    message = repository.getPlayerById(playerId = call.parameters["playerId"]),
+                    message = repository.getPlayerById(playerId = call.parameters["playerId"]!!.toId()),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {

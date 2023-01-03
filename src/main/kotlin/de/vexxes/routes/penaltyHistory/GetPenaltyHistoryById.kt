@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.getPenaltyHistoryById(
     app: Application,
@@ -19,7 +20,7 @@ fun Route.getPenaltyHistoryById(
 
                 app.log.info("PenaltyHistoryId " + call.parameters["penaltyHistoryId"])
                 call.respond(
-                    message = repository.getPenaltyHistoryById(penaltyHistoryId = call.parameters["penaltyHistoryId"]),
+                    message = repository.getPenaltyHistoryById(penaltyHistoryId = call.parameters["penaltyHistoryId"]!!.toId()),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {

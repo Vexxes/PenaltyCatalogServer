@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
 fun Route.deletePenaltyHistory(
     app: Application,
@@ -18,7 +19,7 @@ fun Route.deletePenaltyHistory(
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
                 val penaltyHistoryId = call.parameters["penaltyHistoryId"]
-                val response = repository.deletePenaltyHistory(penaltyHistoryId = penaltyHistoryId)
+                val response = repository.deletePenaltyHistory(penaltyHistoryId = penaltyHistoryId!!.toId())
 
                 if (response) {
                     call.respond(
