@@ -21,6 +21,7 @@ fun Application.configureRouting() {
         rootRoute()
 
         getAllPlayer(application, repository, validateBearerToken)
+        postPlayer(application, repository, validateBearerToken)
         getPlayerById(application, repository, validateBearerToken)
         getPlayersBySearch(application, repository, validateBearerToken)
         updatePlayer(application, repository, validateBearerToken)

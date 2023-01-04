@@ -1,7 +1,9 @@
 package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
+import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,11 +18,8 @@ fun Route.getAllPlayer(
     get(Endpoint.GetAllPlayers.path) {
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-                val sortAscDesc =
-                    if (call.request.queryParameters["sortAscDesc"].isNullOrEmpty()) 1 else call.request.queryParameters["sortAscDesc"]!!.toInt()
-                println(sortAscDesc)
                 call.respond(
-                    message = repository.getAllPlayers(sortOrder = sortAscDesc),
+                    message = repository.getAllPlayers().map(Player::toDto),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {

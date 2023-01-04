@@ -4,6 +4,7 @@ sealed class Endpoint(val path: String) {
     object Root: Endpoint(path = "/")
 
     object GetAllPlayers: Endpoint(path = "/get_players")
+    object PostPlayer: Endpoint(path="/post_player")
     object GetPlayerById: Endpoint(path = "/get_player/{playerId}")
     object GetPlayersBySearch: Endpoint(path = "/get_players_by_search")
     object UpdatePlayer: Endpoint(path = "/update_player")

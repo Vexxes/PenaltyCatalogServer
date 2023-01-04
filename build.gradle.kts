@@ -46,7 +46,7 @@ dependencies {
     // KMongo
     implementation("org.litote.kmongo:kmongo-async:$kmongoVersion")
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
-    implementation("org.litote.kmongo:kmongo-id:$kmongoVersion")
+    implementation("org.litote.kmongo:kmongo:$kmongoVersion")
 
     // Koin core features
     implementation("io.insert-koin:koin-core:$koinVersion")

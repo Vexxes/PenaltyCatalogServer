@@ -3,9 +3,10 @@ package de.vexxes.data.repository
 import de.vexxes.domain.model.*
 import de.vexxes.domain.repository.Repository
 import kotlinx.serialization.Serializable
+import org.bson.types.ObjectId
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import org.litote.kmongo.coroutine.aggregate
+import org.litote.kmongo.id.toId
 
 @Serializable
 data class ResultCount(val count: Int)
@@ -19,24 +20,24 @@ class RepositoryImpl(
     private val penalties = database.getCollection<PenaltyType>()
     private val penaltyReceived = database.getCollection<PenaltyReceived>()
 
-    override suspend fun getAllPlayers(sortOrder: Int): ApiResponse {
-        val sortAscDesc = if (sortOrder == 1) ascending(Player::number) else descending(Player::number)
-        return ApiResponse(
-            success = true,
-            player = players.find().sort(sortAscDesc).toList()
-        )
+    override suspend fun getAllPlayers(): List<Player> =
+        players.find()
+            .toList()
+
+    override suspend fun postPlayer(player: Player): Id<Player>? {
+        players.insertOne(player)
+        return player.id
     }
 
-    override suspend fun getPlayerById(playerId: Id<Player>?): ApiResponse {
-        return ApiResponse(
-            success = true,
-            player = players.find(filter = Player::_id eq playerId).toList()
-        )
+
+    override suspend fun getPlayerById(id: String): Player? {
+        val bsonId: Id<Player> = ObjectId(id).toId()
+        return players.findOne(Player::id eq bsonId)
     }
 
     override suspend fun updatePlayer(player: Player): Boolean {
         return players.updateOneById(
-            id = player._id,
+            id = player.id!!,
             update = player,
             options = upsert()
         ).wasAcknowledged()
@@ -54,14 +55,15 @@ class RepositoryImpl(
 
         return ApiResponse(
             success = true,
-            player = players.find(
-                or(
-                    (Player::firstName).regex(searchTextReplace, "i"),
-                    (Player::lastName).regex(searchTextReplace, "i")
-                )
-            )
-                .sort(ascending(Player::number))
-                .toList()
+            //TODO
+//            player = players.find(
+//                or(
+//                    (Player::firstName).regex(searchTextReplace, "i"),
+//                    (Player::lastName).regex(searchTextReplace, "i")
+//                )
+//            )
+//                .sort(ascending(Player::number))
+//                .toList()
         )
     }
 
@@ -93,17 +95,18 @@ class RepositoryImpl(
     }
 
     override suspend fun getDeclaredPenalties(penaltyTypeId: Id<PenaltyType>?): ApiResponse {
-        val numberOfDeclaredPenalties = penaltyReceived.aggregate<ResultCount>(
-            match(filter = PenaltyReceived::penaltyTypeId eq penaltyTypeId),
-            group(
-                penaltyTypeId,
-                ResultCount::count sum 1
-            )
-        )
+        // TODO
+//        val numberOfDeclaredPenalties = penaltyReceived.aggregate<ResultCount>(
+//            match(filter = PenaltyReceived::penaltyTypeId eq penaltyTypeId),
+//            group(
+//                penaltyTypeId,
+//                ResultCount::count sum 1
+//            )
+//        )
 
         return ApiResponse(
             success = true,
-            message = numberOfDeclaredPenalties.first()!!.count.toString()
+//            message = numberOfDeclaredPenalties.first()!!.count.toString()
         )
     }
 

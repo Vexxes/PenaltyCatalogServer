@@ -7,11 +7,13 @@ import de.vexxes.domain.model.Player
 import org.litote.kmongo.Id
 
 interface Repository {
-    suspend fun getAllPlayers(sortOrder: Int = 1): ApiResponse
-    suspend fun getPlayerById(playerId: Id<Player>?): ApiResponse
+    suspend fun getAllPlayers(): List<Player>
+    suspend fun postPlayer(player: Player): Id<Player>?
+    suspend fun getPlayerById(id: String): Player?
     suspend fun getPlayersBySearch(searchText: String): ApiResponse
     suspend fun updatePlayer(player: Player): Boolean
     suspend fun deletePlayer(playerId: Id<Player>?): Boolean
+
 
     suspend fun getAllCategories(): ApiResponse
     suspend fun getAllPenalties(): ApiResponse
