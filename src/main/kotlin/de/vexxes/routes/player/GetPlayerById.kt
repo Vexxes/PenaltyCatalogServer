@@ -1,6 +1,7 @@
 package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
@@ -16,12 +17,12 @@ fun Route.getPlayerById(
     get(Endpoint.GetPlayerById.path) {
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-                val id = call.parameters["id"].toString()
+                val id = call.parameters["playerId"].toString()
                 app.log.info("PlayerId " + call.parameters["playerId"])
                 repository.getPlayerById(id)
-                    ?.let { player ->
+                    ?.let { foundPerson ->
                         call.respond(
-                            message = player,
+                            message = foundPerson.toDto(),
                             status = HttpStatusCode.OK
                         )
                     }
