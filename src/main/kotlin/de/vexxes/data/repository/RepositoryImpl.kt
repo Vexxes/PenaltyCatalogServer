@@ -35,36 +35,37 @@ class RepositoryImpl(
         return players.findOne(Player::id eq bsonId)
     }
 
-    override suspend fun updatePlayer(player: Player): Boolean {
-        return players.updateOneById(
-            id = player.id!!,
-            update = player,
-            options = upsert()
-        ).wasAcknowledged()
+    override suspend fun updatePlayer(id: String, request: Player): Boolean {
+        return getPlayerById(id)
+            ?.let { player ->
+                val updateResult = players.replaceOneById(
+                    ObjectId(id),
+                    player.copy(
+                        number = request.number,
+                        firstName = request.firstName,
+                        lastName = request.lastName,
+                        birthday = request.birthday,
+                        street = request.street,
+                        zipcode = request.zipcode,
+                        city = request.city,
+                        playedGames = request.playedGames,
+                        goals = request.goals,
+                        yellowCards = request.yellowCards,
+                        twoMinutes = request.twoMinutes,
+                        redCards = request.redCards
+                    )
+                )
+                updateResult.modifiedCount == 1L
+            } ?: false
     }
 
-    override suspend fun deletePlayer(playerId: Id<Player>?): Boolean {
-        return players.deleteOneById(
-            id = playerId!!
-        ).wasAcknowledged()
+    override suspend fun deletePlayer(id: String): Boolean {
+        val deleteResult = players.deleteOneById(ObjectId(id))
+        return deleteResult.deletedCount == 1L
     }
 
-    override suspend fun getPlayersBySearch(searchText: String): ApiResponse {
-        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
-        val searchTextReplace = searchText.replace("\"", "")
-
-        return ApiResponse(
-            success = true,
-            //TODO
-//            player = players.find(
-//                or(
-//                    (Player::firstName).regex(searchTextReplace, "i"),
-//                    (Player::lastName).regex(searchTextReplace, "i")
-//                )
-//            )
-//                .sort(ascending(Player::number))
-//                .toList()
-        )
+    override suspend fun getPlayersBySearch(name: String): List<Player> {
+        return players.find(or(Player::lastName regex name, Player::firstName regex name)).toList()
     }
 
 

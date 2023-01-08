@@ -1,9 +1,9 @@
 package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.model.ApiResponse
+import de.vexxes.domain.dto.PlayerDto
+import de.vexxes.domain.extension.toPlayer
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -19,25 +19,19 @@ fun Route.updatePlayer(
     put(Endpoint.UpdatePlayer.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val player = call.receive<Player>()
-                app.log.info("UPDATE PLAYER INFO ERROR: $player")
+                val id = call.parameters["playerId"].toString()
+                val playerRequest = call.receive<PlayerDto>()
+                val player = playerRequest.toPlayer()
 
-                val response = repository.updatePlayer(player = player)
+                app.log.info("UPDATE PLAYER INFO: $player")
 
-                if (response) {
-                    call.respond(
-                        message = ApiResponse(
-                            success = true,
-                            message = "Successfully Updated!"
-                        ),
-                        status = HttpStatusCode.OK
-                    )
+                val updatedSuccessfully = repository.updatePlayer(id, player)
+                if (updatedSuccessfully) {
+                    call.respond(HttpStatusCode.NoContent)
                 } else {
-                    call.respond(
-                        message = ApiResponse(success = false),
-                        status = HttpStatusCode.BadRequest
-                    )
+                    call.respond(HttpStatusCode.BadRequest, "Player update failed")
                 }
+
             } catch (e: Exception) {
                 app.log.info("UPDATE PLAYER INFO ERROR: ${e.message} ${e.cause}")
             }

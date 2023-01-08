@@ -1,16 +1,15 @@
 package de.vexxes.domain.model
 
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
-import org.litote.kmongo.newId
 
 @Serializable
 data class Player(
-    @BsonId
     @Contextual
-    val id: Id<Player>? = newId(),
+    @SerialName("_id")
+    val id: Id<Player>? = null,
     val number: Int,
     val firstName: String,
     val lastName: String,

@@ -1,40 +1,30 @@
 package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Endpoint
 import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.litote.kmongo.toId
 
 fun Route.deletePlayer(
     app: Application,
     repository: Repository,
     validateBearerToken: ValidateBearerToken
 ) {
-    put(Endpoint.DeletePlayer.path) {
+    delete(Endpoint.DeletePlayer.path) {
 
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val playerId = call.parameters["playerId"]
-                val response = repository.deletePlayer(playerId = playerId!!.toId())
+                val id = call.parameters["playerId"].toString()
 
-                if (response) {
-                    call.respond(
-                        message = ApiResponse(
-                            success = true,
-                            message = "Successfully deleted!"
-                        ),
-                        status = HttpStatusCode.OK
-                    )
+                val deleteSuccessfully = repository.deletePlayer(id)
+
+                if (deleteSuccessfully) {
+                    call.respond(HttpStatusCode.NoContent)
                 } else {
-                    call.respond(
-                        message = ApiResponse(success = false),
-                        status = HttpStatusCode.BadRequest
-                    )
+                    call.respond(HttpStatusCode.NotFound, "Player with id $id not found")
                 }
             } catch (e: Exception) {
                 app.log.info("DELETE PLAYER INFO ERROR: $e")
