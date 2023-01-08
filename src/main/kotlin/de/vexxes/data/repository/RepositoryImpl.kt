@@ -16,8 +16,6 @@ class RepositoryImpl(
 ) : Repository {
 
     private val players = database.getCollection<Player>()
-    private val categories = database.getCollection<PenaltyCategory>()
-    private val penalties = database.getCollection<PenaltyType>()
     private val penaltyReceived = database.getCollection<PenaltyReceived>()
 
     override suspend fun getAllPlayers(): List<Player> =
@@ -35,8 +33,8 @@ class RepositoryImpl(
         return players.findOne(Player::id eq bsonId)
     }
 
-    override suspend fun updatePlayer(id: String, request: Player): Boolean {
-        return getPlayerById(id)
+    override suspend fun updatePlayer(id: String, request: Player): Boolean =
+        getPlayerById(id)
             ?.let { player ->
                 val updateResult = players.replaceOneById(
                     ObjectId(id),
@@ -57,7 +55,6 @@ class RepositoryImpl(
                 )
                 updateResult.modifiedCount == 1L
             } ?: false
-    }
 
     override suspend fun deletePlayer(id: String): Boolean {
         val deleteResult = players.deleteOneById(ObjectId(id))
@@ -68,32 +65,6 @@ class RepositoryImpl(
         return players.find(or(Player::lastName regex name, Player::firstName regex name)).toList()
     }
 
-
-    override suspend fun getAllCategories(): ApiResponse {
-        return ApiResponse(
-            success = true,
-            penaltyCategory = categories.find().toList()
-        )
-    }
-
-    override suspend fun getAllPenalties(): ApiResponse {
-        return ApiResponse(
-            success = true,
-            penaltyType = penalties
-                .find()
-                .sort(
-                    ascending(PenaltyType::name)
-                )
-                .toList()
-        )
-    }
-
-    override suspend fun getPenaltyById(penaltyTypeId: Id<PenaltyType>?): ApiResponse {
-        return ApiResponse(
-            success = true,
-            penaltyType = penalties.find(filter = PenaltyType::_id eq penaltyTypeId).toList()
-        )
-    }
 
     override suspend fun getDeclaredPenalties(penaltyTypeId: Id<PenaltyType>?): ApiResponse {
         // TODO
@@ -109,37 +80,6 @@ class RepositoryImpl(
             success = true,
 //            message = numberOfDeclaredPenalties.first()!!.count.toString()
         )
-    }
-
-    override suspend fun getPenaltiesBySearch(searchText: String): ApiResponse {
-        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
-        val searchTextReplace = searchText.replace("\"", "")
-
-        return ApiResponse(
-            success = true,
-            penaltyType = penalties.find(
-                or(
-                    (PenaltyType::name).regex(searchTextReplace, "i"),
-                    /*TODO*/
-//                    (PenaltyType::categoryID)
-                )
-            )
-                .toList()
-        )
-    }
-
-    override suspend fun updatePenalty(penaltyType: PenaltyType): Boolean {
-        return penalties.updateOneById(
-            id = penaltyType._id,
-            update = penaltyType,
-            options = upsert()
-        ).wasAcknowledged()
-    }
-
-    override suspend fun deletePenalty(penaltyTypeId: Id<PenaltyType>?): Boolean {
-        return penalties.deleteOneById(
-            id = penaltyTypeId!!
-        ).wasAcknowledged()
     }
 
 

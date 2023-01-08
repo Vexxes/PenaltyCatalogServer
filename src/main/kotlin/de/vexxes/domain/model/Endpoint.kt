@@ -1,28 +1,28 @@
 package de.vexxes.domain.model
 
 sealed class Endpoint(val path: String) {
-    object Root: Endpoint(path = "/")
+    object Root : Endpoint(path = "/")
 
-    object GetAllPlayers: Endpoint(path = "/players")
-    object PostPlayer: Endpoint(path="/player")
-    object GetPlayerById: Endpoint(path = "/player/{playerId}")
-    object GetPlayersBySearch: Endpoint(path = "/player-search")
-    object UpdatePlayer: Endpoint(path = "/player/{playerId}")
-    object DeletePlayer: Endpoint(path = "/player/{playerId}")
+    object GetAllPlayers : Endpoint(path = "/players")
+    object PostPlayer : Endpoint(path = "/player")
+    object GetPlayerById : Endpoint(path = "/player/{playerId}")
+    object GetPlayersBySearch : Endpoint(path = "/player-search")
+    object UpdatePlayer : Endpoint(path = "/player/{playerId}")
+    object DeletePlayer : Endpoint(path = "/player/{playerId}")
 
-    object GetAllCategories: Endpoint(path = "/get_categories")
-    object GetAllPenalties: Endpoint(path = "/get_penalties")
-    object GetPenaltyById: Endpoint(path = "/get_penalty/{penaltyId}")
-    object GetDeclaredPenalties: Endpoint(path = "/get_penalty_declared")
-    object GetPenaltiesBySearch: Endpoint(path = "/get_penalties_by_search")
-    object UpdatePenalty: Endpoint(path = "/update_penalty")
-    object DeletePenalty: Endpoint(path = "/delete_penalty/{penaltyId}")
+    object GetAllPenalties : Endpoint(path = "/penalty-types")
+    object GetPenaltyById : Endpoint(path = "/penalty-type/{penaltyTypeId}")
+    object GetDeclaredPenalties : Endpoint(path = "/get_penalty_declared")
+    object GetPenaltiesBySearch : Endpoint(path = "/penalty-type-search")
+    object PostPenaltyType : Endpoint(path = "/penalty-type")
+    object UpdatePenalty : Endpoint(path = "/penalty-type/{penaltyTypeId}")
+    object DeletePenalty : Endpoint(path = "/penalty-type/{penaltyTypeId}")
 
-    object GetAllPenaltyHistory: Endpoint(path = "/get_penalty_history")
-    object GetPenaltyHistoryById: Endpoint(path = "/get_penalty_history/{penaltyHistoryId}")
-    object GetPenaltyHistoryBySearch: Endpoint(path = "/get_penalty_history_by_search")
-    object UpdatePenaltyHistory: Endpoint(path = "/update_penaltyHistory")
-    object DeletePenaltyHistory: Endpoint(path = "/delete_penalty_history/{penaltyHistoryId}")
+    object GetAllPenaltyHistory : Endpoint(path = "/get_penalty_history")
+    object GetPenaltyHistoryById : Endpoint(path = "/get_penalty_history/{penaltyHistoryId}")
+    object GetPenaltyHistoryBySearch : Endpoint(path = "/get_penalty_history_by_search")
+    object UpdatePenaltyHistory : Endpoint(path = "/update_penaltyHistory")
+    object DeletePenaltyHistory : Endpoint(path = "/delete_penalty_history/{penaltyHistoryId}")
 
-    object Unauthorized: Endpoint(path = "/unauthorized")
+    object Unauthorized : Endpoint(path = "/unauthorized")
 }

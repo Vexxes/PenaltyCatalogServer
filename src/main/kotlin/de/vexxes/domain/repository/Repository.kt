@@ -14,14 +14,7 @@ interface Repository {
     suspend fun updatePlayer(id: String, player: Player): Boolean
     suspend fun deletePlayer(id: String): Boolean
 
-
-    suspend fun getAllCategories(): ApiResponse
-    suspend fun getAllPenalties(): ApiResponse
-    suspend fun getPenaltyById(penaltyId: Id<PenaltyType>?): ApiResponse
     suspend fun getDeclaredPenalties(penaltyId: Id<PenaltyType>?): ApiResponse
-    suspend fun getPenaltiesBySearch(searchText: String): ApiResponse
-    suspend fun updatePenalty(penaltyType: PenaltyType): Boolean
-    suspend fun deletePenalty(penaltyId: Id<PenaltyType>?): Boolean
 
     suspend fun getAllPenaltyHistory(): ApiResponse
     suspend fun getPenaltyHistoryById(penaltyHistoryId: Id<PenaltyReceived>?): ApiResponse

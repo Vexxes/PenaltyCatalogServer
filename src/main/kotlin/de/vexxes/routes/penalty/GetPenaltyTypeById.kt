@@ -1,29 +1,31 @@
 package de.vexxes.routes.penalty
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.Repository
+import de.vexxes.domain.repository.PenaltyTypeRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.litote.kmongo.toId
 
-fun Route.getPenaltyById(
+fun Route.getPenaltyTypeById(
     app: Application,
-    repository: Repository,
+    repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
     get(Endpoint.GetPenaltyById.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-
-                app.log.info("PenaltyId " + call.parameters["penaltyId"])
-                call.respond(
-                    message = repository.getPenaltyById(penaltyId = call.parameters["penaltyId"]!!.toId()),
-                    status = HttpStatusCode.OK
-                )
+                val id = call.parameters["penaltyTypeId"].toString()
+                repository.getPenaltyTypeById(id)
+                    ?.let { penaltyType ->
+                        call.respond(
+                            message = penaltyType.toDto(),
+                            status = HttpStatusCode.OK
+                        )
+                    }
             } catch (e: Exception) {
                 app.log.info("GETTING PENALTY BY ID ERROR: ${e.message}")
                 call.respond("GETTING PENALTY BY ID ERROR: ${e.message}")
