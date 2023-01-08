@@ -6,7 +6,7 @@ sealed class Endpoint(val path: String) {
     object GetAllPlayers: Endpoint(path = "/players")
     object PostPlayer: Endpoint(path="/player")
     object GetPlayerById: Endpoint(path = "/player/{playerId}")
-    object GetPlayersBySearch: Endpoint(path = "/playerSearch")
+    object GetPlayersBySearch: Endpoint(path = "/player-search")
     object UpdatePlayer: Endpoint(path = "/player/{playerId}")
     object DeletePlayer: Endpoint(path = "/player/{playerId}")
 
