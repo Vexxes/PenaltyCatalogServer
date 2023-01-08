@@ -3,12 +3,12 @@ package de.vexxes.domain.model
 sealed class Endpoint(val path: String) {
     object Root: Endpoint(path = "/")
 
-    object GetAllPlayers: Endpoint(path = "/get_players")
-    object PostPlayer: Endpoint(path="/post_player")
-    object GetPlayerById: Endpoint(path = "/get_player/{playerId}")
-    object GetPlayersBySearch: Endpoint(path = "/get_players_by_search")
-    object UpdatePlayer: Endpoint(path = "/update_player/{playerId}")
-    object DeletePlayer: Endpoint(path = "/delete_player/{playerId}")
+    object GetAllPlayers: Endpoint(path = "/players")
+    object PostPlayer: Endpoint(path="/player")
+    object GetPlayerById: Endpoint(path = "/player/{playerId}")
+    object GetPlayersBySearch: Endpoint(path = "/playerSearch")
+    object UpdatePlayer: Endpoint(path = "/player/{playerId}")
+    object DeletePlayer: Endpoint(path = "/player/{playerId}")
 
     object GetAllCategories: Endpoint(path = "/get_categories")
     object GetAllPenalties: Endpoint(path = "/get_penalties")
