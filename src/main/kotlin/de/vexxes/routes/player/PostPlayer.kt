@@ -26,7 +26,7 @@ fun Route.postPlayer(
                     ?.let { userId ->
                         call.respond(
                             message = userId.toString(),
-                            status = HttpStatusCode.Created
+                            status = HttpStatusCode.OK
                         )
                     } ?: call.respond(HttpStatusCode.BadRequest, "Bad request")
             } catch (e: Exception) {

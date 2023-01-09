@@ -22,7 +22,10 @@ fun Route.deletePlayer(
                 val deleteSuccessfully = repository.deletePlayer(id)
 
                 if (deleteSuccessfully) {
-                    call.respond(HttpStatusCode.NoContent)
+                    call.respond(
+                        message = true,
+                        status = HttpStatusCode.OK
+                    )
                 } else {
                     call.respond(HttpStatusCode.NotFound, "Player with id $id not found")
                 }
