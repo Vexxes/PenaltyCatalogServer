@@ -1,31 +1,30 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.PenaltyType
-import de.vexxes.domain.repository.PenaltyTypeRepository
+import de.vexxes.domain.repository.Repository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.litote.kmongo.toId
 
-fun Route.getAllPenaltyTypes(
+fun Route.getDeclaredPenalties(
     app: Application,
-    repository: PenaltyTypeRepository,
+    repository: Repository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetAllPenalties.path) {
+    get(Endpoint.GetDeclaredPenalties.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
                 call.respond(
-                    message = repository.getAllPenaltyTypes().map(PenaltyType::toDto),
+                    message = repository.getDeclaredPenalties(penaltyId = call.request.queryParameters["penaltyName"]!!.toId()),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {
-                app.log.info("GETTING PENALTIES ERROR: ${e.message}")
-                call.respond("GETTING PENALTIES ERROR: ${e.message}")
+                app.log.info("GETTING DECLARED PENALTIES ERROR: ${e.message}")
+                call.respond("GETTING DECLARED PENALTIES ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

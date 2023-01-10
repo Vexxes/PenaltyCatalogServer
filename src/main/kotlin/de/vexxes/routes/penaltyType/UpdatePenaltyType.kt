@@ -1,4 +1,4 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.dto.PenaltyTypeDto
@@ -16,7 +16,7 @@ fun Route.updatePenalty(
     repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    put(Endpoint.UpdatePenalty.path) {
+    put(Endpoint.UpdatePenaltyType.path) {
 
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {

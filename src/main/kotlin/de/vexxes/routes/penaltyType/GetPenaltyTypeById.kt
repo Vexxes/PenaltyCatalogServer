@@ -1,4 +1,4 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.extension.toDto
@@ -14,7 +14,7 @@ fun Route.getPenaltyTypeById(
     repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetPenaltyById.path) {
+    get(Endpoint.GetPenaltyTypeById.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {

@@ -1,4 +1,4 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.Endpoint
@@ -14,13 +14,16 @@ fun Route.deletePenaltyType(
     validateBearerToken: ValidateBearerToken
 ) {
 
-    delete(Endpoint.DeletePenalty.path) {
+    delete(Endpoint.DeletePenaltyType.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
                 val id = call.parameters["penaltyTypeId"].toString()
                 val deleteSuccessFully = repository.deletePenaltyType(id)
                 if (deleteSuccessFully) {
-                    call.respond(HttpStatusCode.NoContent)
+                    call.respond(
+                        message = true,
+                        status = HttpStatusCode.OK
+                    )
                 } else {
                     call.respond(HttpStatusCode.NotFound, "PenaltyType with id $id not found")
                 }

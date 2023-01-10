@@ -1,4 +1,4 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.extension.toDto
@@ -10,24 +10,22 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPenaltyTypeBySearch(
+fun Route.getAllPenaltyTypes(
     app: Application,
     repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetPenaltiesBySearch.path) {
+    get(Endpoint.GetAllPenaltyTypes.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-                val name = call.request.queryParameters["name"].toString()
-                val foundPenaltyType = repository.getPenaltyTypeBySearch(name).map(PenaltyType::toDto)
                 call.respond(
-                    message = foundPenaltyType,
+                    message = repository.getAllPenaltyTypes().map(PenaltyType::toDto),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {
-                app.log.info("GETTING PENALTIES BY SEARCH ERROR: ${e.message}")
-                call.respond("GETTING PENALTIES BY SEARCH ERROR: ${e.message}")
+                app.log.info("GETTING PENALTIES ERROR: ${e.message}")
+                call.respond("GETTING PENALTIES ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

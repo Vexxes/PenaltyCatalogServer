@@ -10,13 +10,13 @@ sealed class Endpoint(val path: String) {
     object UpdatePlayer : Endpoint(path = "/player/{playerId}")
     object DeletePlayer : Endpoint(path = "/player/{playerId}")
 
-    object GetAllPenalties : Endpoint(path = "/penalty-types")
-    object GetPenaltyById : Endpoint(path = "/penalty-type/{penaltyTypeId}")
+    object GetAllPenaltyTypes : Endpoint(path = "/penalty-types")
+    object GetPenaltyTypeById : Endpoint(path = "/penalty-type/{penaltyTypeId}")
     object GetDeclaredPenalties : Endpoint(path = "/get_penalty_declared")
-    object GetPenaltiesBySearch : Endpoint(path = "/penalty-type-search")
+    object GetPenaltyTypesBySearch : Endpoint(path = "/penalty-type-search")
     object PostPenaltyType : Endpoint(path = "/penalty-type")
-    object UpdatePenalty : Endpoint(path = "/penalty-type/{penaltyTypeId}")
-    object DeletePenalty : Endpoint(path = "/penalty-type/{penaltyTypeId}")
+    object UpdatePenaltyType : Endpoint(path = "/penalty-type/{penaltyTypeId}")
+    object DeletePenaltyType : Endpoint(path = "/penalty-type/{penaltyTypeId}")
 
     object GetAllPenaltyHistory : Endpoint(path = "/get_penalty_history")
     object GetPenaltyHistoryById : Endpoint(path = "/get_penalty_history/{penaltyHistoryId}")

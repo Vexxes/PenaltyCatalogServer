@@ -1,4 +1,4 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.dto.PenaltyTypeDto
@@ -26,7 +26,7 @@ fun Route.postPenaltyType(
                     ?.let { penaltyTypeId ->
                         call.respond(
                             message = penaltyTypeId.toString(),
-                            status = HttpStatusCode.Created
+                            status = HttpStatusCode.OK
                         )
                     } ?: call.respond(HttpStatusCode.BadRequest, "Bad request")
             } catch (e: Exception) {
