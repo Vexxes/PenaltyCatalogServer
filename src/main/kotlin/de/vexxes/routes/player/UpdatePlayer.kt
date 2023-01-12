@@ -36,7 +36,6 @@ fun Route.updatePlayer(
                         status = HttpStatusCode.BadRequest
                     )
                 }
-
             } catch (e: Exception) {
                 app.log.info("UPDATE PLAYER INFO ERROR: ${e.message} ${e.cause}")
             }
