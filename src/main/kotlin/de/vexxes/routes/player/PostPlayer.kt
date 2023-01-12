@@ -30,8 +30,8 @@ fun Route.postPlayer(
                         )
                     } ?: call.respond(HttpStatusCode.BadRequest, "Bad request")
             } catch (e: Exception) {
-                app.log.info("GETTING PLAYERS ERROR: ${e.message}")
-                call.respond("GETTING PLAYERS ERROR: ${e.message}")
+                app.log.info("POST PLAYERS ERROR: ${e.message}")
+                call.respond("POST PLAYERS ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

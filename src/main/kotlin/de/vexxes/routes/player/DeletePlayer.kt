@@ -27,7 +27,10 @@ fun Route.deletePlayer(
                         status = HttpStatusCode.OK
                     )
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "Player with id $id not found")
+                    call.respond(
+                        message = false,
+                        status = HttpStatusCode.NotFound
+                    )
                 }
             } catch (e: Exception) {
                 app.log.info("DELETE PLAYER INFO ERROR: $e")

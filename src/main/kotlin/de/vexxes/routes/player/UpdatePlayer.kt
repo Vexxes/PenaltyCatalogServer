@@ -27,9 +27,14 @@ fun Route.updatePlayer(
 
                 val updatedSuccessfully = repository.updatePlayer(id, player)
                 if (updatedSuccessfully) {
-                    call.respond(HttpStatusCode.NoContent)
+                    call.respond(
+                        message = true,
+                        status = HttpStatusCode.OK)
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, "Player update failed")
+                    call.respond(
+                        message = false,
+                        status = HttpStatusCode.BadRequest
+                    )
                 }
 
             } catch (e: Exception) {

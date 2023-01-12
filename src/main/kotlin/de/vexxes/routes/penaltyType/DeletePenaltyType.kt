@@ -25,9 +25,11 @@ fun Route.deletePenaltyType(
                         status = HttpStatusCode.OK
                     )
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "PenaltyType with id $id not found")
+                    call.respond(
+                        message = false,
+                        status = HttpStatusCode.NotFound
+                    )
                 }
-
             } catch (e: Exception) {
                 app.log.info("DELETE PENALTY INFO ERROR: $e")
             }

@@ -30,8 +30,8 @@ fun Route.postPenaltyType(
                         )
                     } ?: call.respond(HttpStatusCode.BadRequest, "Bad request")
             } catch (e: Exception) {
-                app.log.info("GETTING PLAYERS ERROR: ${e.message}")
-                call.respond("GETTING PLAYERS ERROR: ${e.message}")
+                app.log.info("POST PENALTY ERROR: ${e.message}")
+                call.respond("POST PENALTY ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

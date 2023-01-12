@@ -3,7 +3,7 @@ package de.vexxes.plugins
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.repository.PenaltyTypeRepository
 import de.vexxes.domain.repository.Repository
-import de.vexxes.routes.penalty.*
+import de.vexxes.routes.penaltyType.*
 import de.vexxes.routes.penaltyHistory.*
 import de.vexxes.routes.player.*
 import de.vexxes.routes.rootRoute

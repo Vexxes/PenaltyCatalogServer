@@ -26,9 +26,15 @@ fun Route.updatePenalty(
 
                 val updatedSuccessfully = repository.updatePenaltyType(id, penaltyType)
                 if (updatedSuccessfully) {
-                    call.respond(HttpStatusCode.OK)
+                    call.respond(
+                        message = true,
+                        status = HttpStatusCode.OK
+                    )
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, "PenaltyType update failed")
+                    call.respond(
+                        message = false,
+                        status = HttpStatusCode.BadRequest
+                    )
                 }
             } catch (e: Exception) {
                 app.log.info("UPDATE PENALTY INFO ERROR: ${e.message} ${e.cause}")
