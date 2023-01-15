@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class PenaltyTypeDto(
     val id: String? = null,
     val name: String,
-    val description: String,
-    val isBeer: Boolean,
+    val description: String = "",
+    val isBeer: Boolean = false,
     val value: Double
 )
