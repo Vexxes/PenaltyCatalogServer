@@ -16,7 +16,6 @@ class RepositoryImpl(
 ) : Repository {
 
     private val players = database.getCollection<Player>()
-    private val penaltyReceived = database.getCollection<PenaltyReceived>()
 
     override suspend fun getAllPlayers(): List<Player> =
         players.find()
@@ -80,60 +79,5 @@ class RepositoryImpl(
             success = true,
 //            message = numberOfDeclaredPenalties.first()!!.count.toString()
         )
-    }
-
-
-    override suspend fun getAllPenaltyHistory(): ApiResponse {
-        return ApiResponse(
-            success = true,
-            penaltyReceived = penaltyReceived
-                .find()
-                .sort(
-                    descending(PenaltyReceived::timeOfPenalty)
-                )
-                .toList()
-        )
-    }
-
-    override suspend fun getPenaltyHistoryById(penaltyReceivedId: Id<PenaltyReceived>?): ApiResponse {
-        return ApiResponse(
-            success = true,
-            penaltyReceived = penaltyReceived.find(filter = PenaltyReceived::_id eq penaltyReceivedId).toList()
-        )
-    }
-
-    override suspend fun getPenaltyHistoryBySearch(searchText: String): ApiResponse {
-        // Parameter has to be replaced, otherwise unnecessary quotation marks are added and the filter won't work
-        val searchTextReplace = searchText.replace("\"", "")
-
-        return ApiResponse(
-            success = true,
-            penaltyReceived = penaltyReceived.find(
-                or(
-                    /*TODO*/
-//                    (PenaltyReceived::penaltyTypeId).regex(searchTextReplace, "i"),
-//                    (PenaltyReceived::playerId).regex(searchTextReplace, "i"),
-                    /*TODO Implement regex / search for timeOfPenalty*/
-                )
-            )
-                .sort(
-                    descending(PenaltyReceived::timeOfPenalty)
-                )
-                .toList()
-        )
-    }
-
-    override suspend fun updatePenaltyHistory(penaltyReceived: PenaltyReceived): Boolean {
-        return this.penaltyReceived.updateOneById(
-            id = penaltyReceived._id,
-            update = penaltyReceived,
-            options = upsert()
-        ).wasAcknowledged()
-    }
-
-    override suspend fun deletePenaltyHistory(penaltyReceivedId: Id<PenaltyReceived>?): Boolean {
-        return penaltyReceived.deleteOneById(
-            id = penaltyReceivedId!!
-        ).wasAcknowledged()
     }
 }

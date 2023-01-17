@@ -23,4 +23,7 @@ val koinModule = module {
     single<PenaltyTypeRepository> {
         PenaltyTypeRepositoryImpl(get())
     }
+    single<PenaltyReceivedRepository> {
+        PenaltyReceivedRepositoryImpl(get())
+    }
 }

@@ -1,4 +1,4 @@
-package de.vexxes.routes.penaltyHistory
+package de.vexxes.routes.penaltyReceived
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.Endpoint
@@ -16,10 +16,7 @@ fun Route.getPenaltyHistoryBySearch(
     get(Endpoint.GetPenaltyHistoryBySearch.path) {
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-                call.respond(
-                    message = repository.getPenaltyHistoryBySearch(searchText = call.request.queryParameters["searchText"]!!),
-                    status = HttpStatusCode.OK
-                )
+
             } catch (e: Exception) {
                 app.log.info("GETTING PENALTY HISTORY BY SEARCH ERROR: ${e.message}")
                 call.respond("GETTING PENALTY HISTORY BY SEARCH ERROR: ${e.message}")

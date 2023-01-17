@@ -18,11 +18,12 @@ sealed class Endpoint(val path: String) {
     object UpdatePenaltyType : Endpoint(path = "/penalty-type/{penaltyTypeId}")
     object DeletePenaltyType : Endpoint(path = "/penalty-type/{penaltyTypeId}")
 
-    object GetAllPenaltyHistory : Endpoint(path = "/get_penalty_history")
-    object GetPenaltyHistoryById : Endpoint(path = "/get_penalty_history/{penaltyHistoryId}")
-    object GetPenaltyHistoryBySearch : Endpoint(path = "/get_penalty_history_by_search")
-    object UpdatePenaltyHistory : Endpoint(path = "/update_penaltyHistory")
-    object DeletePenaltyHistory : Endpoint(path = "/delete_penalty_history/{penaltyHistoryId}")
+    object GetAllPenaltyReceived : Endpoint(path = "/penalties-received")
+    object GetPenaltyReceivedById : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
+    object PostPenaltyReceived : Endpoint(path = "/penalty-received")
+    object GetPenaltyHistoryBySearch : Endpoint(path = "/penalty-received-search")
+    object UpdatePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
+    object DeletePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
 
     object Unauthorized : Endpoint(path = "/unauthorized")
 }

@@ -1,10 +1,11 @@
 package de.vexxes.plugins
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.repository.PenaltyReceivedRepository
 import de.vexxes.domain.repository.PenaltyTypeRepository
 import de.vexxes.domain.repository.Repository
 import de.vexxes.routes.penaltyType.*
-import de.vexxes.routes.penaltyHistory.*
+import de.vexxes.routes.penaltyReceived.*
 import de.vexxes.routes.player.*
 import de.vexxes.routes.rootRoute
 import de.vexxes.routes.unauthorizedRoute
@@ -19,6 +20,7 @@ fun Application.configureRouting() {
     routing {
         val repository: Repository by inject(Repository::class.java)
         val penaltyTypeRepository: PenaltyTypeRepository by inject(PenaltyTypeRepository::class.java)
+        val penaltyReceivedRepository: PenaltyReceivedRepository by inject(PenaltyReceivedRepository::class.java)
         val validateBearerToken = ValidateBearerToken()
         rootRoute()
 
@@ -37,11 +39,12 @@ fun Application.configureRouting() {
         updatePenalty(application, penaltyTypeRepository, validateBearerToken)
         deletePenaltyType(application, penaltyTypeRepository, validateBearerToken)
 
-        getAllPenaltyHistory(application, repository, validateBearerToken)
-        getPenaltyHistoryById(application, repository, validateBearerToken)
+        getAllPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+        getPenaltyReceivedById(application, penaltyReceivedRepository, validateBearerToken)
+        postPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
         getPenaltyHistoryBySearch(application, repository, validateBearerToken)
-        updatePenaltyHistory(application, repository, validateBearerToken)
-        deletePenaltyHistory(application, repository, validateBearerToken)
+        updatePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+        deletePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
 
         unauthorizedRoute()
     }
