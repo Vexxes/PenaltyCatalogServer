@@ -13,6 +13,7 @@ class PenaltyTypeRepositoryImpl(
     database: CoroutineDatabase
 ) : PenaltyTypeRepository {
     private val penaltyTypes = database.getCollection<PenaltyType>()
+
     override suspend fun getAllPenaltyTypes(): List<PenaltyType> =
         penaltyTypes.find().toList()
 

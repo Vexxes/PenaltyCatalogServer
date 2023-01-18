@@ -19,13 +19,19 @@ fun Route.deletePenaltyReceived(
                 val id = call.parameters["penaltyReceivedId"].toString()
                 val deleteSuccessfully = repository.deletePenaltyReceived(id)
                 if (deleteSuccessfully) {
-                    call.respond(HttpStatusCode.NoContent)
+                    call.respond(
+                        message = true,
+                        status = HttpStatusCode.OK
+                    )
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "PenaltyReceived with id $id not found")
+                    call.respond(
+                        message = false,
+                        status = HttpStatusCode.NotFound
+                    )
                 }
 
             } catch (e: Exception) {
-                app.log.info("DELETE PENALTY HISTORY INFO ERROR: $e")
+                app.log.info("DELETE PENALTY RECEIVED INFO ERROR: $e")
             }
         } else {
             app.log.info("authentication failed")

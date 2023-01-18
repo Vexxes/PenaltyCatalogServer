@@ -26,8 +26,8 @@ fun Route.getPenaltyReceivedById(
                         )
                     }
             } catch (e: Exception) {
-                app.log.info("GETTING PENALTY HISTORY BY ID ERROR: ${e.message}")
-                call.respond("GETTING PENALTY HISTORY BY ID ERROR: ${e.message}")
+                app.log.info("GETTING PENALTY RECEIVED BY ID ERROR: ${e.message}")
+                call.respond("GETTING PENALTY RECEIVED BY ID ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

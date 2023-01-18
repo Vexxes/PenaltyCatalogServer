@@ -23,8 +23,8 @@ fun Route.getAllPenaltyReceived(
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {
-                app.log.info("GETTING PENALTY HISTORY ERROR: ${e.message}")
-                call.respond("GETTING PENALTY HISTORY ERROR: ${e.message}")
+                app.log.info("GETTING PENALTY RECEIVED ERROR: ${e.message}")
+                call.respond("GETTING PENALTY RECEIVED ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

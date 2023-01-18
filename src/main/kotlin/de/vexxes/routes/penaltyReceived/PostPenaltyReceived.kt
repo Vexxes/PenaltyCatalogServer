@@ -21,6 +21,7 @@ fun Route.postPenaltyReceived(
             try {
                 val request = call.receive<PenaltyReceivedDto>()
                 val penaltyReceived = request.toPenaltyReceived()
+                println(penaltyReceived)
 
                 repository.postPenaltyReceived(penaltyReceived)
                     ?.let { penaltyReceivedId ->
@@ -30,8 +31,8 @@ fun Route.postPenaltyReceived(
                         )
                     } ?: call.respond(HttpStatusCode.BadRequest, "Bad request")
             } catch (e: Exception) {
-                app.log.info("GETTING PLAYERS ERROR: ${e.message}")
-                call.respond("GETTING PLAYERS ERROR: ${e.message}")
+                app.log.info("POST PENALTY RECEIVED ERROR: ${e.message}")
+                call.respond("POST PENALTY RECEIVED ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

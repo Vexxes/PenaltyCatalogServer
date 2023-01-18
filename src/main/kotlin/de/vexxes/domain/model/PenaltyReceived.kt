@@ -16,5 +16,5 @@ data class PenaltyReceived(
     @Contextual
     val playerId: Id<Player>,
     val timeOfPenalty: LocalDate,
-    val timeOfPenaltyPaid: LocalDate?
+    val timeOfPenaltyPaid: LocalDate? = null
 )

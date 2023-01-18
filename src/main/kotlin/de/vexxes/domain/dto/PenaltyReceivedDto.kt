@@ -8,5 +8,5 @@ data class PenaltyReceivedDto(
     val penaltyTypeId: String,
     val playerId: String,
     val timeOfPenalty: String,
-    val timeOfPenaltyPaid: String?
+    val timeOfPenaltyPaid: String? = null
 )

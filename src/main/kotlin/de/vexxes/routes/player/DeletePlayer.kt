@@ -2,7 +2,8 @@ package de.vexxes.routes.player
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.Repository
+import de.vexxes.domain.repository.PlayerRepository
+
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -10,7 +11,7 @@ import io.ktor.server.routing.*
 
 fun Route.deletePlayer(
     app: Application,
-    repository: Repository,
+    repository: PlayerRepository,
     validateBearerToken: ValidateBearerToken
 ) {
     delete(Endpoint.DeletePlayer.path) {
