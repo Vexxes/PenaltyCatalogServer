@@ -12,7 +12,6 @@ sealed class Endpoint(val path: String) {
 
     object GetAllPenaltyTypes : Endpoint(path = "/penalty-types")
     object GetPenaltyTypeById : Endpoint(path = "/penalty-type/{penaltyTypeId}")
-    object GetDeclaredPenalties : Endpoint(path = "/get_penalty_declared")
     object GetPenaltyTypesBySearch : Endpoint(path = "/penalty-type-search")
     object PostPenaltyType : Endpoint(path = "/penalty-type")
     object UpdatePenaltyType : Endpoint(path = "/penalty-type/{penaltyTypeId}")
@@ -21,7 +20,7 @@ sealed class Endpoint(val path: String) {
     object GetAllPenaltyReceived : Endpoint(path = "/penalties-received")
     object GetPenaltyReceivedById : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
     object PostPenaltyReceived : Endpoint(path = "/penalty-received")
-    object GetPenaltyHistoryBySearch : Endpoint(path = "/penalty-received-search")
+    object GetPenaltyReceivedByPlayerId : Endpoint(path = "/penalty-received-playerId/{playerId}")
     object UpdatePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
     object DeletePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
 

@@ -1,6 +1,7 @@
 package de.vexxes.data.repository
 
 import de.vexxes.domain.model.PenaltyReceived
+import de.vexxes.domain.model.Player
 import de.vexxes.domain.repository.PenaltyReceivedRepository
 import org.bson.types.ObjectId
 import org.litote.kmongo.Id
@@ -18,6 +19,11 @@ class PenaltyReceivedRepositoryImpl(
     override suspend fun getPenaltyReceivedById(id: String): PenaltyReceived? {
         val bsonId: Id<PenaltyReceived> = ObjectId(id).toId()
         return penaltiesReceived.findOne(PenaltyReceived::id eq bsonId)
+    }
+
+    override suspend fun getPenaltyReceivedForPlayer(playerId: String): List<PenaltyReceived> {
+        val bsonId: Id<Player> = ObjectId(playerId).toId()
+        return penaltiesReceived.find(PenaltyReceived::playerId eq bsonId).toList()
     }
 
     override suspend fun postPenaltyReceived(penaltyReceived: PenaltyReceived): Id<PenaltyReceived>? {

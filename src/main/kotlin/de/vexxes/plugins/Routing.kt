@@ -42,7 +42,7 @@ fun Application.configureRouting() {
         getAllPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
         getPenaltyReceivedById(application, penaltyReceivedRepository, validateBearerToken)
         postPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
-        getPenaltyHistoryBySearch(application, playerRepository, validateBearerToken)
+        getPenaltyReceivedByPlayerId(application, penaltyReceivedRepository, validateBearerToken)
         updatePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
         deletePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
 
