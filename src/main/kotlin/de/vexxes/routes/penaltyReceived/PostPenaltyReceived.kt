@@ -21,7 +21,6 @@ fun Route.postPenaltyReceived(
             try {
                 val request = call.receive<PenaltyReceivedDto>()
                 val penaltyReceived = request.toPenaltyReceived()
-                println(penaltyReceived)
 
                 repository.postPenaltyReceived(penaltyReceived)
                     ?.let { penaltyReceivedId ->

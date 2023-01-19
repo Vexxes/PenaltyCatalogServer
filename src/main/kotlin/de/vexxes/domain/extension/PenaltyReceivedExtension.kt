@@ -3,7 +3,8 @@ package de.vexxes.domain.extension
 import de.vexxes.domain.dto.PenaltyReceivedDto
 import de.vexxes.domain.model.PenaltyReceived
 import kotlinx.datetime.LocalDate
-import org.litote.kmongo.toId
+import org.bson.types.ObjectId
+import org.litote.kmongo.id.toId
 
 fun PenaltyReceived.toDto(): PenaltyReceivedDto =
     PenaltyReceivedDto(
@@ -16,8 +17,8 @@ fun PenaltyReceived.toDto(): PenaltyReceivedDto =
 
 fun PenaltyReceivedDto.toPenaltyReceived(): PenaltyReceived =
     PenaltyReceived(
-        penaltyTypeId = this.penaltyTypeId.toId(),
-        playerId = this.playerId.toId(),
+        penaltyTypeId = ObjectId(this.penaltyTypeId).toId(),
+        playerId = ObjectId(this.playerId).toId(),
         timeOfPenalty = LocalDate.parse(this.timeOfPenalty),
         timeOfPenaltyPaid = this.timeOfPenaltyPaid?.let { LocalDate.parse(it) }
     )
