@@ -1,33 +1,32 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.Repository
-import io.ktor.http.*
+import de.vexxes.domain.repository.PlayerRepository
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getAllPenalties(
+fun Route.getDeclaredPenalties(
     app: Application,
-    repository: Repository,
+    repository: PlayerRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetAllPenalties.path) {
+    /*
+    get(Endpoint.GetDeclaredPenalties.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
                 call.respond(
-                    message = repository.getAllPenalties(),
+                    message = repository.getDeclaredPenalties(penaltyId = call.request.queryParameters["penaltyName"]!!.toId()),
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {
-                app.log.info("GETTING PENALTIES ERROR: ${e.message}")
-                call.respond("GETTING PENALTIES ERROR: ${e.message}")
+                app.log.info("GETTING DECLARED PENALTIES ERROR: ${e.message}")
+                call.respond("GETTING DECLARED PENALTIES ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")
             call.respond(HttpStatusCode.Unauthorized)
         }
     }
+     */
 }

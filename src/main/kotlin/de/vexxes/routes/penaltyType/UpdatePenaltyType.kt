@@ -1,10 +1,10 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.model.ApiResponse
+import de.vexxes.domain.dto.PenaltyTypeDto
+import de.vexxes.domain.extension.toPenaltyType
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.Penalty
-import de.vexxes.domain.repository.Repository
+import de.vexxes.domain.repository.PenaltyTypeRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -13,29 +13,26 @@ import io.ktor.server.routing.*
 
 fun Route.updatePenalty(
     app: Application,
-    repository: Repository,
+    repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    put(Endpoint.UpdatePenalty.path) {
+    put(Endpoint.UpdatePenaltyType.path) {
 
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val penalty = call.receive<Penalty>()
-                app.log.info("UPDATE PENALTY INFO ERROR: $penalty")
+                val id = call.parameters["penaltyTypeId"].toString()
+                val penaltyTypeRequest = call.receive<PenaltyTypeDto>()
+                val penaltyType = penaltyTypeRequest.toPenaltyType()
 
-                val response = repository.updatePenalty(penalty = penalty)
-
-                if (response) {
+                val updatedSuccessfully = repository.updatePenaltyType(id, penaltyType)
+                if (updatedSuccessfully) {
                     call.respond(
-                        message = ApiResponse(
-                            success = true,
-                            message = "Successfully Updated!"
-                        ),
+                        message = true,
                         status = HttpStatusCode.OK
                     )
                 } else {
                     call.respond(
-                        message = ApiResponse(success = false),
+                        message = false,
                         status = HttpStatusCode.BadRequest
                     )
                 }

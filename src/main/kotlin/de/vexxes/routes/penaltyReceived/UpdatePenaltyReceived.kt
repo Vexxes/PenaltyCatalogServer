@@ -1,35 +1,35 @@
-package de.vexxes.routes.player
+package de.vexxes.routes.penaltyReceived
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.dto.PlayerDto
-import de.vexxes.domain.extension.toPlayer
+import de.vexxes.domain.dto.PenaltyReceivedDto
+import de.vexxes.domain.extension.toPenaltyReceived
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.PlayerRepository
+import de.vexxes.domain.repository.PenaltyReceivedRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.updatePlayer(
+fun Route.updatePenaltyReceived(
     app: Application,
-    repository: PlayerRepository,
+    repository: PenaltyReceivedRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    put(Endpoint.UpdatePlayer.path) {
+    put(Endpoint.UpdatePenaltyReceived.path) {
+
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val id = call.parameters["playerId"].toString()
-                val playerRequest = call.receive<PlayerDto>()
-                val player = playerRequest.toPlayer()
+                val id = call.parameters["penaltyReceivedId"].toString()
+                val penaltyReceivedRequest = call.receive<PenaltyReceivedDto>()
+                val penaltyReceived = penaltyReceivedRequest.toPenaltyReceived()
 
-                app.log.info("UPDATE PLAYER INFO: $player")
-
-                val updatedSuccessfully = repository.updatePlayer(id, player)
+                val updatedSuccessfully = repository.updatePenaltyReceived(id, penaltyReceived)
                 if (updatedSuccessfully) {
                     call.respond(
                         message = true,
-                        status = HttpStatusCode.OK)
+                        status = HttpStatusCode.OK
+                    )
                 } else {
                     call.respond(
                         message = false,
@@ -37,7 +37,7 @@ fun Route.updatePlayer(
                     )
                 }
             } catch (e: Exception) {
-                app.log.info("UPDATE PLAYER INFO ERROR: ${e.message} ${e.cause}")
+                app.log.info("UPDATE PENALTY RECEIVED INFO ERROR: ${e.message} ${e.cause}")
             }
         } else {
             app.log.info("authentication failed")

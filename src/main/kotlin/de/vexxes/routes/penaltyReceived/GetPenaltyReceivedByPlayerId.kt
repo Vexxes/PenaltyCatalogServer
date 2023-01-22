@@ -1,35 +1,32 @@
-package de.vexxes.routes.player
+package de.vexxes.routes.penaltyReceived
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.model.Player
-import de.vexxes.domain.repository.PlayerRepository
+import de.vexxes.domain.model.PenaltyReceived
+import de.vexxes.domain.repository.PenaltyReceivedRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPlayersBySearch(
+fun Route.getPenaltyReceivedByPlayerId(
     app: Application,
-    repository: PlayerRepository,
+    repository: PenaltyReceivedRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetPlayersBySearch.path) {
-
+    get(Endpoint.GetPenaltyReceivedByPlayerId.path) {
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
-                val name = call.request.queryParameters["name"].toString()
-
-                val foundPlayer = repository.getPlayersBySearch(name).map(Player::toDto)
-
+                val id = call.parameters["playerId"].toString()
+                val foundPenaltyReceived = repository.getPenaltyReceivedForPlayer(id).map(PenaltyReceived::toDto)
                 call.respond(
-                    message = foundPlayer,
+                    message = foundPenaltyReceived,
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {
-                app.log.info("GETTING PLAYERS BY SEARCH ERROR: ${e.message}")
-                call.respond("GETTING PLAYERS BY SEARCH ERROR: ${e.message}")
+                app.log.info("GETTING PENALTY RECEIVED BY SEARCH ERROR: ${e.message}")
+                call.respond("GETTING PENALTY RECEIVED BY SEARCH ERROR: ${e.message}")
             }
         } else {
             app.log.info("authentication failed")

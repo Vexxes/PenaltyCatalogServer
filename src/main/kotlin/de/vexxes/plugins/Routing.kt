@@ -1,9 +1,11 @@
 package de.vexxes.plugins
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.repository.Repository
-import de.vexxes.routes.penalty.*
-import de.vexxes.routes.penaltyHistory.*
+import de.vexxes.domain.repository.PenaltyReceivedRepository
+import de.vexxes.domain.repository.PenaltyTypeRepository
+import de.vexxes.domain.repository.PlayerRepository
+import de.vexxes.routes.penaltyType.*
+import de.vexxes.routes.penaltyReceived.*
 import de.vexxes.routes.player.*
 import de.vexxes.routes.rootRoute
 import de.vexxes.routes.unauthorizedRoute
@@ -16,29 +18,33 @@ fun Application.configureRouting() {
 //    }
 
     routing {
-        val repository: Repository by inject(Repository::class.java)
+        val playerRepository: PlayerRepository by inject(PlayerRepository::class.java)
+        val penaltyTypeRepository: PenaltyTypeRepository by inject(PenaltyTypeRepository::class.java)
+        val penaltyReceivedRepository: PenaltyReceivedRepository by inject(PenaltyReceivedRepository::class.java)
         val validateBearerToken = ValidateBearerToken()
         rootRoute()
 
-        getAllPlayer(application, repository, validateBearerToken)
-        getPlayerById(application, repository, validateBearerToken)
-        getPlayersBySearch(application, repository, validateBearerToken)
-        updatePlayer(application, repository, validateBearerToken)
-        deletePlayer(application, repository, validateBearerToken)
+        getAllPlayer(application, playerRepository, validateBearerToken)
+        postPlayer(application, playerRepository, validateBearerToken)
+        getPlayerById(application, playerRepository, validateBearerToken)
+        getPlayersBySearch(application, playerRepository, validateBearerToken)
+        updatePlayer(application, playerRepository, validateBearerToken)
+        deletePlayer(application, playerRepository, validateBearerToken)
 
-        getAllCategories(application, repository, validateBearerToken)
-        getAllPenalties(application, repository, validateBearerToken)
-        getPenaltyById(application, repository, validateBearerToken)
-        getDeclaredPenalties(application, repository, validateBearerToken)
-        getPenaltiesBySearch(application, repository, validateBearerToken)
-        updatePenalty(application, repository, validateBearerToken)
-        deletePenalty(application, repository, validateBearerToken)
+        getAllPenaltyTypes(application, penaltyTypeRepository, validateBearerToken)
+        getPenaltyTypeById(application, penaltyTypeRepository, validateBearerToken)
+        postPenaltyType(application, penaltyTypeRepository, validateBearerToken)
+        getDeclaredPenalties(application, playerRepository, validateBearerToken)
+        getPenaltyTypeBySearch(application, penaltyTypeRepository, validateBearerToken)
+        updatePenalty(application, penaltyTypeRepository, validateBearerToken)
+        deletePenaltyType(application, penaltyTypeRepository, validateBearerToken)
 
-        getAllPenaltyHistory(application, repository, validateBearerToken)
-        getPenaltyHistoryById(application, repository, validateBearerToken)
-        getPenaltyHistoryBySearch(application, repository, validateBearerToken)
-        updatePenaltyHistory(application, repository, validateBearerToken)
-        deletePenaltyHistory(application, repository, validateBearerToken)
+        getAllPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+        getPenaltyReceivedById(application, penaltyReceivedRepository, validateBearerToken)
+        postPenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+        getPenaltyReceivedByPlayerId(application, penaltyReceivedRepository, validateBearerToken)
+        updatePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+        deletePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
 
         unauthorizedRoute()
     }

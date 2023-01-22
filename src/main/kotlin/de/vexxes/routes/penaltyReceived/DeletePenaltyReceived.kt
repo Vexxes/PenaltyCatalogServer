@@ -1,27 +1,23 @@
-package de.vexxes.routes.player
+package de.vexxes.routes.penaltyReceived
 
 import de.vexxes.authorization.ValidateBearerToken
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.PlayerRepository
-
+import de.vexxes.domain.repository.PenaltyReceivedRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.deletePlayer(
+fun Route.deletePenaltyReceived(
     app: Application,
-    repository: PlayerRepository,
+    repository: PenaltyReceivedRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    delete(Endpoint.DeletePlayer.path) {
-
+    delete(Endpoint.DeletePenaltyReceived.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val id = call.parameters["playerId"].toString()
-
-                val deleteSuccessfully = repository.deletePlayer(id)
-
+                val id = call.parameters["penaltyReceivedId"].toString()
+                val deleteSuccessfully = repository.deletePenaltyReceived(id)
                 if (deleteSuccessfully) {
                     call.respond(
                         message = true,
@@ -33,8 +29,9 @@ fun Route.deletePlayer(
                         status = HttpStatusCode.NotFound
                     )
                 }
+
             } catch (e: Exception) {
-                app.log.info("DELETE PLAYER INFO ERROR: $e")
+                app.log.info("DELETE PENALTY RECEIVED INFO ERROR: $e")
             }
         } else {
             app.log.info("authentication failed")

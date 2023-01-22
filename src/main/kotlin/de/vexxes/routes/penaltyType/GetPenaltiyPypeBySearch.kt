@@ -1,24 +1,28 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.extension.toDto
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.Repository
+import de.vexxes.domain.model.PenaltyType
+import de.vexxes.domain.repository.PenaltyTypeRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPenaltiesBySearch(
+fun Route.getPenaltyTypeBySearch(
     app: Application,
-    repository: Repository,
+    repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
-    get(Endpoint.GetPenaltiesBySearch.path) {
+    get(Endpoint.GetPenaltyTypesBySearch.path) {
 
         if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
             try {
+                val name = call.request.queryParameters["name"].toString()
+                val foundPenaltyType = repository.getPenaltyTypeBySearch(name).map(PenaltyType::toDto)
                 call.respond(
-                    message = repository.getPenaltiesBySearch(searchText = call.request.queryParameters["searchText"]!!),
+                    message = foundPenaltyType,
                     status = HttpStatusCode.OK
                 )
             } catch (e: Exception) {

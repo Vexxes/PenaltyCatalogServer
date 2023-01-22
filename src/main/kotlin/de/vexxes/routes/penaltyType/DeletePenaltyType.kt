@@ -1,38 +1,33 @@
-package de.vexxes.routes.penalty
+package de.vexxes.routes.penaltyType
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.model.ApiResponse
 import de.vexxes.domain.model.Endpoint
-import de.vexxes.domain.repository.Repository
+import de.vexxes.domain.repository.PenaltyTypeRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.deletePenalty(
+fun Route.deletePenaltyType(
     app: Application,
-    repository: Repository,
+    repository: PenaltyTypeRepository,
     validateBearerToken: ValidateBearerToken
 ) {
 
-    put(Endpoint.DeletePenalty.path) {
+    delete(Endpoint.DeletePenaltyType.path) {
         if (validateBearerToken.validateAdmin(call.request.headers["Authorization"].toString())) {
             try {
-                val penaltyId = call.parameters["penaltyId"]
-                val response = repository.deletePenalty(penaltyId = penaltyId)
-
-                if (response) {
+                val id = call.parameters["penaltyTypeId"].toString()
+                val deleteSuccessFully = repository.deletePenaltyType(id)
+                if (deleteSuccessFully) {
                     call.respond(
-                        message = ApiResponse(
-                            success = true,
-                            message = "Successfully deleted!"
-                        ),
+                        message = true,
                         status = HttpStatusCode.OK
                     )
                 } else {
                     call.respond(
-                        message = ApiResponse(success = false),
-                        status = HttpStatusCode.BadRequest
+                        message = false,
+                        status = HttpStatusCode.NotFound
                     )
                 }
             } catch (e: Exception) {
