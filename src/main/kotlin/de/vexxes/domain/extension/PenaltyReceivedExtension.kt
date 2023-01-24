@@ -12,7 +12,7 @@ fun PenaltyReceived.toDto(): PenaltyReceivedDto =
         penaltyTypeId = this.penaltyTypeId.toString(),
         playerId = this.playerId.toString(),
         timeOfPenalty = this.timeOfPenalty.toString(),
-        timeOfPenaltyPaid = this.timeOfPenaltyPaid.toString()
+        timeOfPenaltyPaid =if(this.timeOfPenaltyPaid == null) null else this.timeOfPenaltyPaid.toString()
     )
 
 fun PenaltyReceivedDto.toPenaltyReceived(): PenaltyReceived =
