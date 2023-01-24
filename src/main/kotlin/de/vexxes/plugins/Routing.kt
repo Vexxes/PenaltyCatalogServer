@@ -1,11 +1,13 @@
 package de.vexxes.plugins
 
 import de.vexxes.authorization.ValidateBearerToken
+import de.vexxes.domain.repository.EventRepository
 import de.vexxes.domain.repository.PenaltyReceivedRepository
 import de.vexxes.domain.repository.PenaltyTypeRepository
 import de.vexxes.domain.repository.PlayerRepository
-import de.vexxes.routes.penaltyType.*
+import de.vexxes.routes.event.*
 import de.vexxes.routes.penaltyReceived.*
+import de.vexxes.routes.penaltyType.*
 import de.vexxes.routes.player.*
 import de.vexxes.routes.rootRoute
 import de.vexxes.routes.unauthorizedRoute
@@ -21,6 +23,7 @@ fun Application.configureRouting() {
         val playerRepository: PlayerRepository by inject(PlayerRepository::class.java)
         val penaltyTypeRepository: PenaltyTypeRepository by inject(PenaltyTypeRepository::class.java)
         val penaltyReceivedRepository: PenaltyReceivedRepository by inject(PenaltyReceivedRepository::class.java)
+        val eventRepository: EventRepository by inject(EventRepository::class.java)
         val validateBearerToken = ValidateBearerToken()
         rootRoute()
 
@@ -45,6 +48,12 @@ fun Application.configureRouting() {
         getPenaltyReceivedByPlayerId(application, penaltyReceivedRepository, validateBearerToken)
         updatePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
         deletePenaltyReceived(application, penaltyReceivedRepository, validateBearerToken)
+
+        getAllEvents(application, eventRepository, validateBearerToken)
+        getEventById(application, eventRepository, validateBearerToken)
+        postEvent(application, eventRepository, validateBearerToken)
+        updateEvent(application, eventRepository, validateBearerToken)
+        deleteEvent(application, eventRepository, validateBearerToken)
 
         unauthorizedRoute()
     }

@@ -24,5 +24,11 @@ sealed class Endpoint(val path: String) {
     object UpdatePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
     object DeletePenaltyReceived : Endpoint(path = "/penalty-received/{penaltyReceivedId}")
 
+    object GetAllEvents : Endpoint(path = "/events")
+    object GetEventById : Endpoint(path = "/event/{eventId}")
+    object PostEvent : Endpoint(path = "/event")
+    object UpdateEvent : Endpoint(path = "/event/{eventId}")
+    object DeleteEvent : Endpoint(path = "/event/{eventId}")
+
     object Unauthorized : Endpoint(path = "/unauthorized")
 }

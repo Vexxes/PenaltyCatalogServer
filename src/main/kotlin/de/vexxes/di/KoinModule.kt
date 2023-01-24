@@ -1,9 +1,11 @@
 package de.vexxes.di
 
 import com.mongodb.ConnectionString
+import de.vexxes.data.repository.EventRepositoryImpl
 import de.vexxes.data.repository.PenaltyReceivedRepositoryImpl
 import de.vexxes.data.repository.PenaltyTypeRepositoryImpl
 import de.vexxes.data.repository.PlayerRepositoryImpl
+import de.vexxes.domain.repository.EventRepository
 import de.vexxes.domain.repository.PenaltyReceivedRepository
 import de.vexxes.domain.repository.PenaltyTypeRepository
 import de.vexxes.domain.repository.PlayerRepository
@@ -29,6 +31,10 @@ val koinModule = module {
 
     single<PenaltyReceivedRepository> {
         PenaltyReceivedRepositoryImpl(get())
+    }
+
+    single<EventRepository> {
+        EventRepositoryImpl(get())
     }
 
 }
