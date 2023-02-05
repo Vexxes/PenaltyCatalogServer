@@ -15,5 +15,13 @@ data class Event(
     val startOfEvent: LocalDateTime,
     val startOfMeeting: LocalDateTime,
     val address: String,
-    val description: String
+    val description: String,
+    val players: List<PlayerState>
+)
+
+@Serializable
+data class PlayerState(
+    @Contextual
+    val playerId: Id<Player>,
+    val state: Int
 )

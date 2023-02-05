@@ -35,7 +35,8 @@ class EventRepositoryImpl(
                         startOfEvent = request.startOfEvent,
                         startOfMeeting = request.startOfMeeting,
                         address = request.address,
-                        description = request.description
+                        description = request.description,
+                        players = request.players
                     )
                 )
                 updateResult.modifiedCount == 1L

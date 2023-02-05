@@ -9,5 +9,12 @@ data class EventDto(
     val startOfEvent: String,
     val startOfMeeting: String,
     val address: String,
-    val description: String
+    val description: String,
+    val players: List<PlayerStateDto>
+)
+
+@Serializable
+data class PlayerStateDto(
+    val playerId: String,
+    val state: Int
 )
