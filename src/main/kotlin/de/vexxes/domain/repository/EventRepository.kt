@@ -1,6 +1,7 @@
 package de.vexxes.domain.repository
 
 import de.vexxes.domain.model.Event
+import de.vexxes.domain.model.PlayerState
 import org.litote.kmongo.Id
 
 interface EventRepository {
@@ -9,4 +10,5 @@ interface EventRepository {
     suspend fun getEventById(id: String): Event?
     suspend fun updateEvent(id: String, event: Event): Boolean
     suspend fun deleteEvent(id: String): Boolean
+    suspend fun playerEvent(id: String, playerState: PlayerState): Boolean
 }

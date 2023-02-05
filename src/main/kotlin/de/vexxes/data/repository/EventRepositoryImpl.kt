@@ -1,6 +1,7 @@
 package de.vexxes.data.repository
 
 import de.vexxes.domain.model.Event
+import de.vexxes.domain.model.PlayerState
 import de.vexxes.domain.repository.EventRepository
 import org.bson.types.ObjectId
 import org.litote.kmongo.Id
@@ -46,4 +47,30 @@ class EventRepositoryImpl(
         val deleteResult = events.deleteOneById(ObjectId(id))
         return deleteResult.deletedCount == 1L
     }
+
+    override suspend fun playerEvent(id: String, playerState: PlayerState): Boolean =
+        getEventById(id)
+            ?.let { event ->
+                val playerList: MutableList<PlayerState> = emptyArray<PlayerState>().toMutableList()
+                if (event.players.stream().anyMatch { a -> a.playerId == playerState.playerId }) {
+                    event.players.forEach { a -> playerList.add(a) }
+                    playerList.removeIf { a -> a.playerId == playerState.playerId }
+                    playerList.add(playerState)
+                } else {
+                    event.players.forEach { a -> playerList.add(a) }
+                    playerList.add(playerState)
+                }
+                val updateResult = events.replaceOneById(
+                    ObjectId(id),
+                    event.copy(
+                        title = event.title,
+                        startOfEvent = event.startOfEvent,
+                        startOfMeeting = event.startOfMeeting,
+                        address = event.address,
+                        description = event.description,
+                        players = playerList
+                    )
+                )
+                updateResult.modifiedCount == 1L
+            } ?: false
 }

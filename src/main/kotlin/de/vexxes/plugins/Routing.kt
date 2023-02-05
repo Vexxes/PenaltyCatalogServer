@@ -54,6 +54,7 @@ fun Application.configureRouting() {
         postEvent(application, eventRepository, validateBearerToken)
         updateEvent(application, eventRepository, validateBearerToken)
         deleteEvent(application, eventRepository, validateBearerToken)
+        playerEvent(application, eventRepository, validateBearerToken)
 
         unauthorizedRoute()
     }
