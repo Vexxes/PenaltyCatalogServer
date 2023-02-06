@@ -16,5 +16,5 @@ data class EventDto(
 @Serializable
 data class PlayerStateDto(
     val playerId: String,
-    val state: Int
+    val state: String
 )

@@ -23,5 +23,9 @@ data class Event(
 data class PlayerState(
     @Contextual
     val playerId: Id<Player>,
-    val state: Int
+    val state: State
 )
+
+enum class State {
+    PRESENT, CANCELED, PAIDBEER, NOTPRESENT
+}

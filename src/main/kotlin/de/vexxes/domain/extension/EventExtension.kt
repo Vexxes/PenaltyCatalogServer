@@ -4,6 +4,7 @@ import de.vexxes.domain.dto.EventDto
 import de.vexxes.domain.dto.PlayerStateDto
 import de.vexxes.domain.model.Event
 import de.vexxes.domain.model.PlayerState
+import de.vexxes.domain.model.State
 import kotlinx.datetime.LocalDateTime
 import org.bson.types.ObjectId
 import org.litote.kmongo.id.toId
@@ -32,13 +33,13 @@ fun EventDto.toEvent(): Event =
 fun PlayerState.toDto(): PlayerStateDto =
     PlayerStateDto(
         playerId = this.playerId.toString(),
-        state = this.state
+        state = this.state.toString()
     )
 
 fun PlayerStateDto.toPlayerState(): PlayerState =
     PlayerState(
         playerId = ObjectId(this.playerId).toId(),
-        state = this.state
+        state = State.valueOf(this.state)
     )
 
 private fun toDtoList(players: List<PlayerState>): List<PlayerStateDto> {
