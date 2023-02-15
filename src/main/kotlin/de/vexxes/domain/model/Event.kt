@@ -16,7 +16,8 @@ data class Event(
     val startOfMeeting: LocalDateTime,
     val address: String,
     val description: String,
-    val players: List<PlayerState>
+    val players: List<PlayerState>,
+    val type: Type
 )
 
 @Serializable
@@ -28,4 +29,8 @@ data class PlayerState(
 
 enum class State {
     PRESENT, CANCELED, PAIDBEER, NOTPRESENT
+}
+
+enum class Type {
+    TRAINING, SPIEL, TESTSPIEL, SONSTIGES
 }
