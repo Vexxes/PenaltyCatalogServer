@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 data class EventDto(
     val id: String? = null,
     val title: String,
-    val startOfEvent: String,
-    val startOfMeeting: String,
-    val address: String,
-    val description: String,
-    val players: List<PlayerStateDto>,
+    val startOfEvent: String = "",
+    val startOfMeeting: String = "",
+    val address: String = "",
+    val description: String = "",
+    val players: List<PlayerStateDto> = emptyList(),
     val type: String
 )
 

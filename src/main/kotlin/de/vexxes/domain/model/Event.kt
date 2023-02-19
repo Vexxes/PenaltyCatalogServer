@@ -32,5 +32,5 @@ enum class State {
 }
 
 enum class Type {
-    TRAINING, SPIEL, TESTSPIEL, SONSTIGES
+    TRAINING, GAME, TESTGAME, MISCELLANEOUS
 }
