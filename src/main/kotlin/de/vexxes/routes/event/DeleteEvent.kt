@@ -23,7 +23,7 @@ fun Route.deleteEvent(
                 if (deleteSuccessfully) {
                     call.respond(
                         message = true,
-                        status = HttpStatusCode.NotFound
+                        status = HttpStatusCode.OK
                     )
                 } else {
                     call.respond(
