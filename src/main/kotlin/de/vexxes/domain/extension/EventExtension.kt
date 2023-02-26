@@ -36,13 +36,13 @@ fun EventDto.toEvent(): Event =
 fun PlayerState.toDto(): PlayerStateDto =
     PlayerStateDto(
         playerId = this.playerId.toString(),
-        state = this.state.toString()
+        playerState = this.playerState.toString()
     )
 
 fun PlayerStateDto.toPlayerState(): PlayerState =
     PlayerState(
         playerId = ObjectId(this.playerId).toId(),
-        state = State.valueOf(this.state)
+        playerState = State.valueOf(this.playerState)
     )
 
 private fun toDtoList(players: List<PlayerState>): List<PlayerStateDto> {
