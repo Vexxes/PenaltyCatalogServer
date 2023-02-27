@@ -14,23 +14,23 @@ data class Event(
     val title: String,
     val startOfEvent: LocalDateTime,
     val startOfMeeting: LocalDateTime,
-    val address: String,
-    val description: String,
-    val players: List<PlayerState>,
-    val type: Type
+    val address: String = "",
+    val description: String = "",
+    val players: List<EventPlayerAvailability>,
+    val type: EventType
 )
 
 @Serializable
-data class PlayerState(
+data class EventPlayerAvailability(
     @Contextual
     val playerId: Id<Player>,
-    val playerState: State
+    val playerState: PlayerState = PlayerState.UNDEFINED
 )
 
-enum class State {
+enum class PlayerState {
     UNDEFINED, PRESENT, CANCELED, PAID_BEER, NOT_PRESENT
 }
 
-enum class Type {
+enum class EventType {
     TRAINING, GAME, TESTGAME, MISCELLANEOUS
 }

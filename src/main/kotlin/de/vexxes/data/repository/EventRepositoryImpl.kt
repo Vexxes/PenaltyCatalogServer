@@ -1,7 +1,7 @@
 package de.vexxes.data.repository
 
 import de.vexxes.domain.model.Event
-import de.vexxes.domain.model.PlayerState
+import de.vexxes.domain.model.EventPlayerAvailability
 import de.vexxes.domain.repository.EventRepository
 import org.bson.types.ObjectId
 import org.litote.kmongo.Id
@@ -49,10 +49,10 @@ class EventRepositoryImpl(
         return deleteResult.deletedCount == 1L
     }
 
-    override suspend fun playerEvent(id: String, playerState: PlayerState): Boolean =
+    override suspend fun playerEvent(id: String, playerState: EventPlayerAvailability): Boolean =
         getEventById(id)
             ?.let { event ->
-                val playerList: MutableList<PlayerState> = emptyArray<PlayerState>().toMutableList()
+                val playerList: MutableList<EventPlayerAvailability> = emptyArray<EventPlayerAvailability>().toMutableList()
                 if (event.players.stream().anyMatch { a -> a.playerId == playerState.playerId }) {
                     event.players.forEach { a -> playerList.add(a) }
                     playerList.removeIf { a -> a.playerId == playerState.playerId }

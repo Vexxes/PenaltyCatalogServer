@@ -3,9 +3,7 @@ package de.vexxes.domain.extension
 import de.vexxes.domain.dto.EventDto
 import de.vexxes.domain.dto.PlayerStateDto
 import de.vexxes.domain.model.Event
-import de.vexxes.domain.model.PlayerState
-import de.vexxes.domain.model.State
-import de.vexxes.domain.model.Type
+import de.vexxes.domain.model.EventPlayerAvailability
 import kotlinx.datetime.LocalDateTime
 import org.bson.types.ObjectId
 import org.litote.kmongo.id.toId
@@ -19,7 +17,7 @@ fun Event.toDto(): EventDto =
         address = this.address,
         description = this.description,
         players = toDtoList(this.players),
-        type = this.type.toString()
+        type = this.type
     )
 
 fun EventDto.toEvent(): Event =
@@ -30,29 +28,29 @@ fun EventDto.toEvent(): Event =
         address = this.address,
         description = this.description,
         players = toPlayerState(this.players),
-        type = Type.valueOf(this.type)
+        type = this.type
     )
 
-fun PlayerState.toDto(): PlayerStateDto =
+fun EventPlayerAvailability.toDto(): PlayerStateDto =
     PlayerStateDto(
         playerId = this.playerId.toString(),
-        playerState = this.playerState.toString()
+        playerState = this.playerState
     )
 
-fun PlayerStateDto.toPlayerState(): PlayerState =
-    PlayerState(
+fun PlayerStateDto.toPlayerState(): EventPlayerAvailability =
+    EventPlayerAvailability(
         playerId = ObjectId(this.playerId).toId(),
-        playerState = State.valueOf(this.playerState)
+        playerState = this.playerState
     )
 
-private fun toDtoList(players: List<PlayerState>): List<PlayerStateDto> {
+private fun toDtoList(players: List<EventPlayerAvailability>): List<PlayerStateDto> {
     val playerList: MutableList<PlayerStateDto> = emptyArray<PlayerStateDto>().toMutableList()
     players.forEach { a -> playerList.add(a.toDto()) }
     return playerList
 }
 
-private fun toPlayerState(players: List<PlayerStateDto>): List<PlayerState> {
-    val playerList: MutableList<PlayerState> = emptyArray<PlayerState>().toMutableList()
+private fun toPlayerState(players: List<PlayerStateDto>): List<EventPlayerAvailability> {
+    val playerList: MutableList<EventPlayerAvailability> = emptyArray<EventPlayerAvailability>().toMutableList()
     players.forEach { a -> playerList.add(a.toPlayerState()) }
     return playerList
 }
