@@ -1,5 +1,6 @@
 #Start this docker-compose file use 'docker-compose up -d' <- this will also create the container
 #Stop the container with 'docker-compose down' <- this will also delete the container
+#Open http://localhost:9090/graph  for the prometheus graph
 
 version: "1"
 services:
@@ -22,3 +23,10 @@ services:
     command: ['java', '-jar', '/opt/penaltycatalogserver.jar']
     links:
       - "penalty-database:database"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090

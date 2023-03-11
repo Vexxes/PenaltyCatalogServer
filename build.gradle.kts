@@ -53,6 +53,11 @@ dependencies {
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
+    // micrometer for monitoring
+    implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.3.1")
+
+
     // Google Client API Library
     implementation("com.google.api-client:google-api-client:2.0.1")
 
