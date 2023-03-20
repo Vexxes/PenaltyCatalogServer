@@ -31,5 +31,13 @@ sealed class Endpoint(val path: String) {
     object DeleteEvent : Endpoint(path = "/event/{eventId}")
     object PlayerEvent : Endpoint(path = "/event-player/{eventId}")
 
+    object GetAllCancellation : Endpoint(path = "/cancellation")
+    object GetCancellationById : Endpoint(path = "/cancellation/{cancellationId}")
+    object GetCancellationByEventId : Endpoint(path = "/cancellation/event/{eventId}")
+    object GetCancellationByPlayerId : Endpoint(path = "/cancellation/player/{playerId}")
+    object PostCancellation : Endpoint(path = "/cancellation")
+    object UpdateCancellation : Endpoint(path = "/cancellation/{cancellationId}")
+    object DeleteCancellation : Endpoint(path = "/cancellation/{cancellationId}")
+
     object Unauthorized : Endpoint(path = "/unauthorized")
 }

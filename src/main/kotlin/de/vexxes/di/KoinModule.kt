@@ -37,4 +37,8 @@ val koinModule = module {
         EventRepositoryImpl(get())
     }
 
+    single<CancellationRepository> {
+        CancellationRepositoryImpl(get())
+    }
+
 }

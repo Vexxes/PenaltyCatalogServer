@@ -1,10 +1,8 @@
 package de.vexxes.plugins
 
 import de.vexxes.authorization.ValidateBearerToken
-import de.vexxes.domain.repository.EventRepository
-import de.vexxes.domain.repository.PenaltyReceivedRepository
-import de.vexxes.domain.repository.PenaltyTypeRepository
-import de.vexxes.domain.repository.PlayerRepository
+import de.vexxes.domain.repository.*
+import de.vexxes.routes.cancellation.*
 import de.vexxes.routes.event.*
 import de.vexxes.routes.penaltyReceived.*
 import de.vexxes.routes.penaltyType.*
@@ -24,6 +22,7 @@ fun Application.configureRouting() {
         val penaltyTypeRepository: PenaltyTypeRepository by inject(PenaltyTypeRepository::class.java)
         val penaltyReceivedRepository: PenaltyReceivedRepository by inject(PenaltyReceivedRepository::class.java)
         val eventRepository: EventRepository by inject(EventRepository::class.java)
+        val cancellationRepository: CancellationRepository by inject(CancellationRepository::class.java)
         val validateBearerToken = ValidateBearerToken()
         rootRoute()
 
@@ -55,6 +54,14 @@ fun Application.configureRouting() {
         updateEvent(application, eventRepository, validateBearerToken)
         deleteEvent(application, eventRepository, validateBearerToken)
         playerEvent(application, eventRepository, validateBearerToken)
+
+        getAllCancellation(application, cancellationRepository, validateBearerToken)
+        getCancellationById(application, cancellationRepository, validateBearerToken)
+        getCancellationByPlayerId(application, cancellationRepository, validateBearerToken)
+        getCancellationByEventId(application, cancellationRepository, validateBearerToken)
+        postCancellation(application, cancellationRepository, validateBearerToken)
+        updateCancellation(application, cancellationRepository, validateBearerToken)
+        deleteCancellation(application, cancellationRepository, validateBearerToken)
 
         unauthorizedRoute()
     }

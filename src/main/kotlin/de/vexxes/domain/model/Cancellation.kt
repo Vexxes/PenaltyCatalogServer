@@ -1,14 +1,19 @@
 package de.vexxes.domain.model
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
 
 @Serializable
 data class Cancellation(
-    @BsonId
-    val _id: Id<Cancellation>,
+    @Contextual
+    @SerialName("_id")
+    val id: Id<Cancellation>? = null,
+    @Contextual
     val playerId: Id<Player>,
+    @Contextual
     val eventId: Id<Event>,
-    val cancelFor: String
+    val timeOfCancellation: LocalDateTime
 )
