@@ -16,19 +16,14 @@ fun Route.getAllEvents(
     validateBearerToken: ValidateBearerToken
 ) {
     get(Endpoint.GetAllEvents.path) {
-        if (validateBearerToken.validateAll(call.request.headers["Authorization"].toString())) {
-            try {
-                call.respond(
-                    message = repository.getAllEvents().map(Event::toDto),
-                    status = HttpStatusCode.OK
-                )
-            } catch (e: Exception) {
-                app.log.info("GETTING EVENTS ERROR: ${e.message}")
-                call.respond("GETTING EVENTS ERROR: ${e.message}")
-            }
-        } else {
-            app.log.info("authentication failed")
-            call.respond(HttpStatusCode.Unauthorized)
+        try {
+            call.respond(
+                message = repository.getAllEvents().map(Event::toDto),
+                status = HttpStatusCode.OK
+            )
+        } catch (e: Exception) {
+            app.log.info("GETTING EVENTS ERROR: ${e.message}")
+            call.respond("GETTING EVENTS ERROR: ${e.message}")
         }
     }
 }

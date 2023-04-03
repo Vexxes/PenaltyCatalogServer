@@ -10,3 +10,6 @@ COPY --from=build /home/gradle/src/build/libs/de.vexxes.penaltycatalogserver-0.0
 #COPY --from=build ./src/build/libs/*.jar ./app/penaltycatalogserver.jar
 
 ENTRYPOINT ["java","-jar","/app/penaltycatalogserver.jar"]
+
+FROM prom/prometheus
+ADD prometheus.yml /etc/prometheus/

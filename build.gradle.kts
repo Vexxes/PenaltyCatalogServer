@@ -39,9 +39,12 @@ dependencies {
 
     // Sessions
     implementation("io.ktor:ktor-server-sessions-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
 
     // Auth
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
 
     // KMongo
     implementation("org.litote.kmongo:kmongo-async:$kmongoVersion")
