@@ -8,9 +8,9 @@ services:
     image: mongo
     ports:
       - 27017:27017
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root
+    #    environment:
+    #      MONGO_INITDB_ROOT_USERNAME: root
+    #      MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - "./data/db:/data/db"
 
@@ -20,7 +20,7 @@ services:
       - 8088:8088
     volumes:
       - "./build/libs/de.vexxes.penaltycatalogserver-0.0.1.jar:/opt/penaltycatalogserver.jar"
-    command: ['java', '-jar', '/opt/penaltycatalogserver.jar']
+    command: [ 'java', '-jar', '/opt/penaltycatalogserver.jar' ]
     links:
       - "penalty-database:database"
 
@@ -30,3 +30,29 @@ services:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     ports:
       - 9090:9090
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - 8180:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+    command: [ "start-dev" ]
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
