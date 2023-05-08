@@ -1,9 +1,8 @@
 package de.vexxes.util
 
 object Constants {
-
-    const val AUDIENCE = "YOUR_AUDIENCE"
-    const val ISSUER = "https://accounts.google.com"
-
     const val DATABASE_NAME = "penaltyCatalogDb"
+
+    const val keycloakAddress = "http://host.docker.internal:8180"
+    const val keycloakOAUth = "keycloakOAuth"
 }
